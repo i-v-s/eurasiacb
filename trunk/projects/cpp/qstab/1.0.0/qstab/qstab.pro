@@ -20,7 +20,9 @@ unix {
 }
 
 SOURCES += main.cpp \
-    videoprocessor.cpp
+    videoprocessor.cpp \
+    featuretracker.cpp
 
 HEADERS += \
-    videoprocessor.h
+    videoprocessor.h \
+    featuretracker.h
