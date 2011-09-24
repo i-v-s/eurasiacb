@@ -19,4 +19,8 @@ unix {
     PKGCONFIG += opencv
 }
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    videoprocessor.cpp
+
+HEADERS += \
+    videoprocessor.h
