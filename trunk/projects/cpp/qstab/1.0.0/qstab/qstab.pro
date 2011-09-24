@@ -14,5 +14,9 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+unix {
+    CONFIG += link_pkgconfig
+    PKGCONFIG += opencv
+}
 
 SOURCES += main.cpp
