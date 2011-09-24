@@ -17,25 +17,17 @@ void VideoProcessor::setFrameProcessor(void (*frameProcessingCallback)(cv::Mat &
 bool VideoProcessor::setInput(std::string filename)
 {
     fnumber = 0;
-    // In case a resource was already
-    // associated with the VideoCapture instance
     capture.release();
-    //images.clear();
 
-    // Open the video file
     return capture.open(filename);
 }
 
 bool VideoProcessor::setInput(int id)
 {
     fnumber = 0;
-    // In case a resource was already
-    // associated with the VideoCapture instance
     capture.release();
-    //images.clear();
     isCam = true;
 
-    // Open the video file
     return capture.open(id);
 }
 
@@ -61,51 +53,39 @@ void VideoProcessor::dontDisplay()
 
 void VideoProcessor::run()
 {
-    // current frame
     cv::Mat frame;
-    // output frame
     cv::Mat output;
-    // if no capture device has been set
     if (!isOpened())
         return;
 
     stop= false;
 
     while (!isStopped()) {
-        // read next frame if any
         if (!readNextFrame(frame))
             break;
 
-        // display input frame
         if (windowNameInput.length()!=0)
             cv::imshow(windowNameInput,frame);
 
-        // ** calling the process function or method **
         if (callIt) {
-            // process the frame
-            if (process) // if call back function
+            if (process)
                 process(frame, output);
             else if (frameProcessor)
                 frameProcessor->process(frame,output);
-            // increment frame number
             fnumber++;
         } else {
             output= frame;
         }
 
-        // ** write output sequence **
         if (outputFile.length()!=0)
             writeNextFrame(output);
 
-        // display output frame
         if (windowNameOutput.length()!=0)
             cv::imshow(windowNameOutput,output);
 
-        // introduce a delay
         if (delay>=0 && cv::waitKey(delay)>=0)
             stopIt();
 
-        // check if we should stop
         if (frameToStop>=0 && getFrameNumber()==frameToStop)
             stopIt();
     }
@@ -163,7 +143,6 @@ void VideoProcessor::stopAtFrameNo(long frame)
 
 long VideoProcessor::getFrameNumber()
 {
-    // get info of from the capture device
     long fnumber= static_cast<long>(capture.get(CV_CAP_PROP_POS_FRAMES));
     return fnumber;
 }
@@ -188,10 +167,7 @@ cv::Size VideoProcessor::getFrameSize() {
 
 bool VideoProcessor::setInput(const std::vector<std::string>& imgs) {
     fnumber = 0;
-    // In case a resource was already
-    // associated with the VideoCapture instance
     capture.release();
-    // the input will be this vector of images
     images= imgs;
     itImg= images.begin();
     return true;
@@ -199,10 +175,7 @@ bool VideoProcessor::setInput(const std::vector<std::string>& imgs) {
 
 void VideoProcessor::setFrameProcessor(FrameProcessor* frameProcessorPtr)
 {
-    // invalidate callback function
     process= 0;
-    // this is the frame processor instance
-    // that will be called
     frameProcessor= frameProcessorPtr;
     callProcess();
 }
