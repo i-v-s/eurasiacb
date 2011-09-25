@@ -158,11 +158,9 @@ float VideoProcessor::getFrameRate()
 }
 
 cv::Size VideoProcessor::getFrameSize() {
-    cv::Size size = cv::Size(
-                    static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH)),
-                    static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT))
-                              );
-    return size;
+    cv::Mat frame;
+    capture >> frame;
+    return frame.size();
 }
 
 bool VideoProcessor::setInput(const std::vector<std::string>& imgs) {
