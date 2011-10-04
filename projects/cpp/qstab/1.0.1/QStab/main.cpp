@@ -1,7 +1,7 @@
 #include "featuretracker.h"
 
 int main(){
-
+    //Yo!
     VideoProcessor processor;
     FeatureTracker tracker;
     processor.setInput(CV_CAP_ANY);
