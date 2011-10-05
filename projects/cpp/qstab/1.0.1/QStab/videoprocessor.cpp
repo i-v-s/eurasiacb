@@ -3,7 +3,7 @@
 #include <iomanip>
 
 VideoProcessor::VideoProcessor(): callIt(true), delay(0),
-    fnumber(0), stop(false), frameToStop(-1), defoaltRate(15.), isCam(false)
+    fnumber(0), stop(false), frameToStop(-1), defoaltRate(10.), isCam(false)
 {
 }
 

@@ -8,15 +8,9 @@ void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
     cv::cvtColor(frame, gray, CV_BGR2GRAY);
     frame.copyTo(output);
 
-    // 1. if new feature points must be added
-    if(addNewPoints())
-    {
-        detectFeaturePoints();
-        points[0].insert(points[0].end(),
-                         features.begin(),features.end());
-        initial.insert(initial.end(),
-                       features.begin(),features.end());
-    }
+    detectFeaturePoints();
+    points[0].insert(points[0].end(),
+                     features.begin(),features.end());
 
     if(gray_prev.empty())
         gray.copyTo(gray_prev);
@@ -28,29 +22,15 @@ void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
                     status,
                     err);
 
-    // 2. loop over the tracked points to reject some
-    int k=0;
-    for( int i= 0; i < points[1].size(); i++ ) {
-        if (acceptTrackedPoint(i)) {
-            initial[k]= initial[i];
-            points[1][k++] = points[1][i];
-        }
-    }
-    // eliminate unsuccesful points
-    points[1].resize(k);
-    initial.resize(k);
+    calcMotion(frame);
+    drawMotion(frame, output);
 
-    // 3. handle the accepted tracked points
-    handleTrackedPoints(frame, output);
-
-    // 4. current points and image become previous ones
     std::swap(points[1], points[0]);
     cv::swap(gray_prev, gray);
 
 }
 
 void FeatureTracker::detectFeaturePoints() {
-    // detect the features
     cv::goodFeaturesToTrack(gray,
                     features,
                     max_count,
@@ -62,20 +42,65 @@ bool FeatureTracker::addNewPoints(){
     return points[0].size()<=10;
 }
 
-bool FeatureTracker::acceptTrackedPoint(int i) {
-    return status[i] &&
-                    (abs(points[0][i].x-points[1][i].x)+
-                    (abs(points[0][i].y-points[1][i].y))>2);
+void FeatureTracker::drawMotion(cv::Mat &frame, cv::Mat &output) {
+
+    //LEFT
+    cv::circle(output, cv::Point(output.cols/3, output.rows/2),
+               3, cv::Scalar(0,255,0), 3);
+    cv::line(output, cv::Point(output.cols/3, output.rows/2),
+             cv::Point(output.cols/3 + leftMotion,output.rows/2), cv::Scalar(0, 255, 0), 3);
+
+    //CENTER
+    cv::circle(output, cv::Point(output.cols/2, output.rows/2),
+               3, cv::Scalar(0,255,0), 3);
+    cv::line(output, cv::Point(output.cols/2, output.rows/2),
+             cv::Point(output.cols/2, output.rows/2 + verticalMotion), cv::Scalar(0, 255, 0), 3);
+
+
+    //RIGHT
+    cv::circle(output, cv::Point(2*output.cols/3, output.rows/2),
+               3, cv::Scalar(0,255,0), 3);
+    cv::line(output, cv::Point(2*output.cols/3, output.rows/2),
+             cv::Point(2*output.cols/3 + rightMotion,output.rows/2), cv::Scalar(0, 255, 0), 3);
 
 }
 
-void FeatureTracker::handleTrackedPoints(cv::Mat &frame, cv::Mat &output) {
-    for(int i= 0; i < points[1].size(); i++ ) {
-        cv::line(output,
-                        initial[i],
-                        points[1][i],
-                        cv::Scalar(255,255,255));
-        cv::circle(output, points[1][i], 3,
-                   cv::Scalar(255,255,255),-1);
+
+void FeatureTracker::calcMotion(cv::Mat &frame) {
+    leftMotion = 0.0;
+    rightMotion = 0.0;
+    verticalMotion = 0.0;
+    int rnum = 0;
+    int lnum = 0;
+    int cnum = 0;
+
+    int lborder = gray.cols/3;
+    int rborder = lborder*2;
+
+    for( int i= 0; i < points[1].size(); i++ ) {
+        if(status[i]){
+            if(points[0][i].x<lborder) {
+                leftMotion += points[0][i].x-points[1][i].x;
+                lnum++;
+            } else if (points[0][i].x>rborder) {
+                rightMotion += points[0][i].x-points[1][i].x;
+                rnum++;
+            } else {
+                verticalMotion += points[0][i].y-points[1][i].y;
+                cnum++;
+            }
+        }
     }
+
+    if(lnum!=0) {
+        leftMotion/=lnum;
+    }
+    if(rnum!=0) {
+        rightMotion/=rnum;
+    }
+    if(cnum!=0) {
+        verticalMotion/=cnum;
+    }
+
+    return;
 }

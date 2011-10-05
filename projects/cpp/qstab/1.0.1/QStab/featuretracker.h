@@ -9,11 +9,13 @@ class FeatureTracker: public FrameProcessor
     cv::Mat gray;
     cv::Mat gray_prev;
     std::vector<cv::Point2f> points[2];
-    std::vector<cv::Point2f> initial;
     std::vector<cv::Point2f> features;
     int max_count;
     double qlevel;
     double minDist;
+    double rightMotion;
+    double leftMotion;
+    double verticalMotion;
     std::vector<uchar> status;
     std::vector<float> err;
 
@@ -22,8 +24,8 @@ public:
     void process(cv:: Mat &frame, cv:: Mat &output);
     void detectFeaturePoints();
     bool addNewPoints();
-    bool acceptTrackedPoint(int i);
-    void handleTrackedPoints(cv:: Mat &frame,
+    void calcMotion(cv::Mat& frame);
+    void drawMotion(cv:: Mat &frame,
                     cv:: Mat &output);
 
 };
