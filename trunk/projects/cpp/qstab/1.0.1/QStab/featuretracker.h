@@ -3,6 +3,7 @@
 
 #include <opencv2/video/video.hpp>
 #include "videoprocessor.h"
+#include <sys/timeb.h>
 
 class FeatureTracker: public FrameProcessor
 {
