@@ -10,8 +10,7 @@ void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
     cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
     detectFeaturePoints();
-    points[0].insert(points[0].end(),
-                     features.begin(),features.end());
+    points[0] = features;
 
     if(gray_prev.empty())
         gray.copyTo(gray_prev);
