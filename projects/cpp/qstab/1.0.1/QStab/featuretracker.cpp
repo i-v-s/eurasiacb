@@ -5,8 +5,9 @@ FeatureTracker::FeatureTracker() : max_count(500),
 }
 
 void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
-    cv::cvtColor(frame, gray, CV_BGR2GRAY);
+
     frame.copyTo(output);
+    cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
     detectFeaturePoints();
     points[0].insert(points[0].end(),
@@ -23,11 +24,8 @@ void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
                     err);
 
     calcMotion(frame);
-    drawMotion(frame, output);
-
-    std::swap(points[1], points[0]);
     cv::swap(gray_prev, gray);
-
+    drawMotion(frame, output);
 }
 
 void FeatureTracker::detectFeaturePoints() {
