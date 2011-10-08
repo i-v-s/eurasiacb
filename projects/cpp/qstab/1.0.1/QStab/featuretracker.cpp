@@ -1,12 +1,14 @@
 #include "featuretracker.h"
 
+using namespace qstab;
+
 FeatureTracker::FeatureTracker() : max_count(500),
             qlevel(0.01), minDist(10.) {
+    trigger = 0;
 }
 
-void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
+void FeatureTracker::process(cv::Mat &frame, cv::Mat &output, bool isShow) {
 
-    frame.copyTo(output);
     cv::cvtColor(frame, gray, CV_BGR2GRAY);
 
     detectFeaturePoints();
@@ -24,7 +26,15 @@ void FeatureTracker::process(cv::Mat &frame, cv::Mat &output) {
 
     calcMotion(frame);
     cv::swap(gray_prev, gray);
-    drawMotion(frame, output);
+
+    if(trigger) {
+        trigger(leftMotion, verticalMotion, rightMotion);
+    }
+
+    if(isShow) {
+        frame.copyTo(output);
+        drawMotion(frame, output);
+    }
 }
 
 void FeatureTracker::detectFeaturePoints() {
@@ -33,10 +43,6 @@ void FeatureTracker::detectFeaturePoints() {
                     max_count,
                     qlevel,
                     minDist);
-}
-
-bool FeatureTracker::addNewPoints(){
-    return points[0].size()<=10;
 }
 
 void FeatureTracker::drawMotion(cv::Mat &frame, cv::Mat &output) {
@@ -100,4 +106,9 @@ void FeatureTracker::calcMotion(cv::Mat &frame) {
     }
 
     return;
+}
+
+void qstab::FeatureTracker::setTrigger(void (*triggerFunc)(double,double, double))
+{
+    trigger= triggerFunc;
 }

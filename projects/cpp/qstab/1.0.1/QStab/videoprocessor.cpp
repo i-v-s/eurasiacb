@@ -71,7 +71,7 @@ void VideoProcessor::run()
             if (process)
                 process(frame, output);
             else if (frameProcessor)
-                frameProcessor->process(frame,output);
+                frameProcessor->process(frame,output, (windowNameOutput.length()!=0));
             fnumber++;
         } else {
             output= frame;
