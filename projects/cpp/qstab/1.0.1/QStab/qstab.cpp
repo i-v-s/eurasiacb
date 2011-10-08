@@ -1,4 +1,4 @@
-#include "featuretracker.h"
+#include "qstab.h"
 
 using namespace qstab;
 
