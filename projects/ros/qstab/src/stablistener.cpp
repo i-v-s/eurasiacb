@@ -13,7 +13,7 @@ void chatterCallback(const qstab::Move msg)
 {
   int fd=open_port(); // Открыли порт. fd - файловый дескриптор для порта
   int n;
-  n = write(fd, (char) msg.horizontal, 6);
+  n = write(fd, (char*) msg.horizontal, 6);
   if (n < 0)
   {
      fputs("write() of 4 bytes failed!\n", stderr);
