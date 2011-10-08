@@ -1,4 +1,4 @@
-#include "featuretracker.h"
+#include "qstab.h"
 #include <iostream>
 
 void mytrigger(double lMotion, double cMotion, double rMotion) {

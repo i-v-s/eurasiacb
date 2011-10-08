@@ -32,8 +32,8 @@ Win32 {
 
 SOURCES += main.cpp \
     videoprocessor.cpp \
-    featuretracker.cpp
+    qstab.cpp
 
 HEADERS += \
     videoprocessor.h \
-    featuretracker.h
+    qstab.h
