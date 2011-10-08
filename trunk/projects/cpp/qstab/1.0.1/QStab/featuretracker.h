@@ -5,6 +5,8 @@
 #include "videoprocessor.h"
 #include <sys/timeb.h>
 
+namespace qstab {
+
 class FeatureTracker: public FrameProcessor
 {
     cv::Mat gray;
@@ -20,15 +22,17 @@ class FeatureTracker: public FrameProcessor
     std::vector<uchar> status;
     std::vector<float> err;
 
-public:
-    FeatureTracker();
-    void process(cv:: Mat &frame, cv:: Mat &output);
+    void (*trigger)(double, double, double);
+
     void detectFeaturePoints();
-    bool addNewPoints();
     void calcMotion(cv::Mat& frame);
     void drawMotion(cv:: Mat &frame,
                     cv:: Mat &output);
-
+public:
+    FeatureTracker();
+    void process(cv:: Mat &frame, cv:: Mat &output, bool isShow);
+    void setTrigger(void (*triggerFunc) (double, double, double));
 };
 
+}
 #endif // FEATURETRACKER_H
