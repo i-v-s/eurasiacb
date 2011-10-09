@@ -40,6 +40,40 @@ int main(int argc, char **argv)
 
   fd=open_port(); // Открыли порт. fd - файловый дескриптор для порта
 
+<<<<<<< .mine
+  
+  //Блок установки скорости передачи http://linuxland.itam.nsc.ru/misc/other19/index.html
+  struct termios options;
+
+=======
+>>>>>>> .r31
+  /*
+   * Получение текущих опций для порта...
+   */
+
+  tcgetattr(fd, &options);
+
+  /*
+   * Установка скорости передачи в 19200...
+   */
+  
+  cfsetispeed(&options, B115200);
+  cfsetospeed(&options, B115200);
+
+  /*
+   * Разрешение приемника и установка локального режима...
+   */
+
+  options.c_cflag |= (CLOCAL | CREAD);
+  
+  /*
+   * Установка новых опций для порта...
+   */
+
+  tcsetattr(fd, TCSANOW, &options);
+  // Конец блока установки скорости передачи
+
+
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
    * callbacks will be called from within this thread (the main one).  ros::spin()
