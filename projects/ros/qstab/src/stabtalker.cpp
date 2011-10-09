@@ -1,6 +1,6 @@
 #include "ros/ros.h"
-#include "qstab/Move.h"
-#include "qstab.h"
+//#include "qstab/Move.h"
+//#include "qstab.h"
 
 #include <sstream>
 
@@ -20,6 +20,7 @@ void trigger(double lMotion, double cMotion, double rMotion) {
 
 int main(int argc, char **argv)
 {
+/*
 	ros::init(argc, argv, "stabtalker");
 	ros::NodeHandle n;
 	chatter_pub = n.advertise<qstab::Move>("chatter", 1000);
@@ -34,5 +35,6 @@ int main(int argc, char **argv)
 	processor.setDelay(1000./processor.getFrameRate());
 	processor.run();
 
+*/
 	return 0;
 }
