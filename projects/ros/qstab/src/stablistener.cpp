@@ -9,9 +9,11 @@
 
 int open_port(void);      //Функция открытия порта
 
+int fd;
+
+
 void chatterCallback(const qstab::Move msg)
 {
-  int fd=open_port(); // Открыли порт. fd - файловый дескриптор для порта
   int n;
   n = write(fd, (char*) msg.horizontal, 6);
   if (n < 0)
@@ -23,23 +25,12 @@ void chatterCallback(const qstab::Move msg)
   {
   printf(" n= %d  \n",n)  ;
   }
-  close(fd);
   ROS_INFO("I heard: [%ld]", (long int) msg.horizontal);
 }
 
 
 int main(int argc, char **argv)
 {
-  /**
-   * The ros::init() function needs to see argc and argv so that it can perform
-   * any ROS arguments and name remapping that were provided at the command line. For programmatic
-   * remappings you can use a different version of init() which takes remappings
-   * directly, but for most command-line programs, passing argc and argv is the easiest
-   * way to do it.  The third argument to init() is the name of the node.
-   *
-   * You must call one of the versions of ros::init() before using any other
-   * part of the ROS system.
-   */
   ros::init(argc, argv, "stablistener");
 
   ros::NodeHandle n;
@@ -47,7 +38,7 @@ int main(int argc, char **argv)
   ros::Subscriber sub = n.subscribe("chatter", 1000, chatterCallback);
 
 
-
+  fd=open_port(); // Открыли порт. fd - файловый дескриптор для порта
 
   /**
    * ros::spin() will enter a loop, pumping callbacks.  With this version, all
@@ -56,6 +47,7 @@ int main(int argc, char **argv)
    */
   ros::spin();
 
+  close(fd);
   return 0;
 }
 
