@@ -1,0 +1,17 @@
+<package>
+  <description brief="cyphy">
+
+     cyphy
+
+  </description>
+  <author>bachinin</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/cyphy</url>
+  <depend package="roscpp"/>
+  <depend package="sensor_msgs"/>
+  <depend package="control_toolbox"/>
+
+</package>
+
+
