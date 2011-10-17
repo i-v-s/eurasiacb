@@ -21,7 +21,7 @@
  */
 
 #ifndef MIKO_FLIGHTCONTROL_FLIGHTCONTROL_H
-#define MIKO_FLIGHTCONTROL_FLIGHTCONTROL_H
+#define MIKO_FLIGHTCONTROL_FLIGHTCONTROL_H //нахрена ему это определение, которое ничего не  определяет?
 
 #include <stdio.h>
 #include <sys/termios.h>
@@ -41,6 +41,7 @@
 #include <sys/time.h>
 #include <control_toolbox/pid.h>
 #include "serialinterface.h"
+#include "serial_interface.cpp"
 
 #if 0
 #define TRUE 1
@@ -49,7 +50,8 @@
 #define NO 0
 #endif
 
-#define FC_ADDRESS 1
+#define FC_ADDRESS 1 // значение, котрое передаётся функции SendOutData. В функции выглядит так uint8_t addr. Записывает второй символ массива  g_txd_buffer как
+// g_txd_buffer[pt++] = 'a' + addr;  // Address (a=0; b=1,...) - нужно понять, что значит второй символ в массиве этом
 #define MAX_THROTTLE 255
 #define YAW_SCALE_FACTOR 80
 //#define PITCH_SCALE_FACTOR 128
@@ -188,7 +190,7 @@ namespace miko
 		DesiredPosition_t DesiredPosition;
     
 		public:
-		SerialInterface* serialInterface_;
+                SerialInterface* serialInterface_;
 
 		ros::Time last_time;
 		ros::Time current_time;

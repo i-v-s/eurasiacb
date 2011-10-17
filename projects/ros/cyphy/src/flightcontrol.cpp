@@ -41,10 +41,10 @@ DebugOut_t g_DebugData,g_DebugData_Temp;
 
 int main(int argc, char **argv)
 {
-	int interval=0;
-	int nLength;
+//	int interval=0;
+//	int nLength;
 	ros::init(argc, argv, "flightcontrol");
-	miko::FlightControl::FlightControl flightcontrol;
+        miko::FlightControl flightcontrol;
 
 	#if 0
 		miko::SerialInterface::SerialInterface serialInterface;
@@ -119,7 +119,7 @@ namespace miko
 			
 		// **** set up intefaces
 
-		serialInterface_ = new miko::SerialInterface::SerialInterface (port_, speed_);
+                serialInterface_ = new miko::SerialInterface (port_, speed_);
 		serialInterface_->serialport_bytes_rx_ = 0;
 		serialInterface_->serialport_bytes_tx_ = 0;
 		
