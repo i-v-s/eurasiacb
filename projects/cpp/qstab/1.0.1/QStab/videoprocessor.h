@@ -9,14 +9,14 @@
 class FrameProcessor {
 public:
     // processing method
-    virtual void process(cv:: Mat &input, cv:: Mat &output, bool isShow)= 0;
+    virtual void process(std::vector<cv::Mat> &input, std::vector<cv::Mat> &output, bool isShow)= 0;
 };
 
 
 class VideoProcessor
 {
 private:
-    cv::VideoCapture capture;
+    std::vector<cv::VideoCapture> captures;
 
     std::vector<std::string> images;
     std::vector<std::string>::const_iterator itImg;
@@ -24,12 +24,13 @@ private:
     float defoaltRate;
     void (*process)(cv::Mat&, cv::Mat&);
     bool callIt;
-    std::string windowNameInput;
-    std::string windowNameOutput;
+    std::vector<std::string> windowNameInputs;
+    std::vector<std::string> windowNameOutputs;
     int delay;
     long fnumber;
     long frameToStop;
     bool stop;
+    // Заплатка
     bool isCam;
 
     FrameProcessor* frameProcessor;
@@ -47,9 +48,11 @@ public:
     VideoProcessor();
 
     //Setters
-    void setFrameProcessor(void (*frameProcessingCallback) (cv::Mat&, cv::Mat&));
+    void setFrameProcessor(void (*frameProcessingCallback) (std::vector<cv::Mat>&, std::vector<cv::Mat>&));
     bool setInput(std::string filename);
     bool setInput(int id);
+    bool addInput(std::string filename);
+    bool addInput(int id);
     bool setInput(const std::vector<std::string>& imgs);
     void setFrameProcessor(FrameProcessor* frameProcessorPtr);
     bool setOutput(const std::string &filename,  int codec=0,
@@ -59,7 +62,6 @@ public:
     void setDelay(int d);
 
     // Getters
-    long getFrameNumber();
     float getFrameRate();
     cv::Size getFrameSize();
     int getCodec(char codec[4]);
@@ -67,16 +69,15 @@ public:
     bool isOpened();
 
 
-    void writeNextFrame(cv::Mat& frame);
+    void writeNextFrame(cv::Mat& frames);
     void displayInput(std::string wn);
     void displayOutput(std::string wn);
     void dontDisplay();
     void run();
     void stopIt();
-    bool readNextFrame(cv::Mat& frame);
+    bool readNextFrames(std::vector<cv::Mat>& frames);
     void callProcess();
     void dontCallProcess();
-    void stopAtFrameNo(long frame);
 
 };
 

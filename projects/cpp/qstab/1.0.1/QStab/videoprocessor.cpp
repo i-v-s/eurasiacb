@@ -17,76 +17,112 @@ void VideoProcessor::setFrameProcessor(void (*frameProcessingCallback)(cv::Mat &
 bool VideoProcessor::setInput(std::string filename)
 {
     fnumber = 0;
-    capture.release();
+    captures.clear();
+    cv::VideoCapture capture;
+    captures.push_back(capture);
 
-    return capture.open(filename);
+    return captures[0].open(filename);
+}
+
+bool VideoProcessor::addInput(std::string filename) {
+    fnumber = 0;
+    cv::VideoCapture capture;
+    captures.push_back(capture);
+
+    return captures[captures.size()-1].open(filename);
 }
 
 bool VideoProcessor::setInput(int id)
 {
     fnumber = 0;
-    capture.release();
+    captures.clear();
+    cv::VideoCapture capture;
+    captures.push_back(capture);
     isCam = true;
 
-    return capture.open(id);
+    return captures[0].open(id);
+}
+
+bool VideoProcessor::addInput(int id) {
+    fnumber = 0;
+    cv::VideoCapture capture;
+    captures.push_back(capture);
+    isCam=true;
+
+    return captures[captures.size()-1].open(id);
 }
 
 void VideoProcessor::displayInput(std::string wn)
 {
-    windowNameInput = wn;
-    cv::namedWindow(windowNameInput);
+    windowNameInputs.push_back(wn);
+    cv::namedWindow(wm);
 }
 
 void VideoProcessor::displayOutput(std::string wn)
 {
-    windowNameOutput= wn;
-    cv::namedWindow(windowNameOutput);
+    windowNameOutputs.push_back(wn);
+    cv::namedWindow(wm);
 }
 
 void VideoProcessor::dontDisplay()
 {
-    cv::destroyWindow(windowNameInput);
-    cv::destroyWindow(windowNameOutput);
-    windowNameInput.clear();
-    windowNameOutput.clear();
+    for(std::vector<std::string>::const_iterator it = windowNameInputs.begin();
+                            it != windowNameInputs.end(); it++) {
+        cv::destroyWindow(it);
+    }
+    for(std::vector<std::string>::const_iterator it = windowNameOutputs.begin();
+                            it != windowNameOutputs.end(); it++) {
+        cv::destroyWindow(it);
+    }
+
+    windowNameInputs.clear();
+    windowNameOutputs.clear();
 }
 
 void VideoProcessor::run()
 {
-    cv::Mat frame;
-    cv::Mat output;
+    std::vector<cv::Mat> frames;
+    std::vector<cv::Mat> outputs;
     if (!isOpened())
         return;
 
     stop= false;
 
     while (!isStopped()) {
-        if (!readNextFrame(frame))
+
+        if (!readNextFrames(frames))
             break;
 
-        if (windowNameInput.length()!=0)
-            cv::imshow(windowNameInput,frame);
+        if (windowNameInputs.size()>0) {
+            for(int i = 0; i < windowNameInputs.size(); i++){
+                if(i<frames.size()) {
+                    cv::imshow(windowNameInputs[i],frames[i]);
+                }
+            }
+        }
+
 
         if (callIt) {
             if (process)
-                process(frame, output);
+                process(frames, outputs);
             else if (frameProcessor)
-                frameProcessor->process(frame,output, (windowNameOutput.length()!=0));
+                frameProcessor->process(frames,outputs, (windowNameOutputs.size()>0));
             fnumber++;
         } else {
-            output= frame;
+            outputs = frames;
         }
 
         if (outputFile.length()!=0)
-            writeNextFrame(output);
+            writeNextFrame(outputs[0]);
 
-        if (windowNameOutput.length()!=0)
-            cv::imshow(windowNameOutput,output);
+        if (windowNameOutputs.size()>0)
+            for(int i = 0; i < windowNameOutputs.size(); i++){
+                if(i<outputs.size()) {
+                    cv::imshow(windowNameOutputs[i],outputs[i]);
+                }
+            }
 
         if (delay>=0 && cv::waitKey(delay)>=0)
-            stopIt();
-
-        if (frameToStop>=0 && getFrameNumber()==frameToStop)
             stopIt();
     }
 }
@@ -103,7 +139,7 @@ bool VideoProcessor::isStopped()
 
 bool VideoProcessor::isOpened()
 {
-    return capture.isOpened() || !images.empty();
+    return !captures.empty() || !images.empty();
 }
 
 void VideoProcessor::setDelay(int d)
@@ -111,15 +147,25 @@ void VideoProcessor::setDelay(int d)
     delay = d;
 }
 
-bool VideoProcessor::readNextFrame(cv::Mat &frame)
+bool VideoProcessor::readNextFrames(std::vector<cv::Mat> &frames)
 {
-    if (images.size()==0)
-        return capture.read(frame);
-    else {
+    if (images.size()==0) {
+        // Если хоть одна камера вышла из строя возвращается false
+        bool ok = true;
+        frames.clear();
+        for(std::vector<cv::VideoCapture>::const_iterator it = captures.begin();
+                        it != captures.end(); it++) {
+            cv::Mat frame;
+            ok = (it.read(frame)&&ok);
+            frames.push_back(frame);
+        }
+        return ok;
+    } else {
         if (itImg != images.end()) {
-            frame= cv::imread(*itImg);
+            frames.clear();
+            frames.push_back(cv::imread(*itImg));
             itImg++;
-            return frame.data != 0;
+            return frames[0].data != 0;
         } else {
             return false;
         }
@@ -136,36 +182,25 @@ void VideoProcessor::dontCallProcess()
     callIt = false;
 }
 
-void VideoProcessor::stopAtFrameNo(long frame)
-{
-    frameToStop = frame;
-}
-
-long VideoProcessor::getFrameNumber()
-{
-    long fnumber= static_cast<long>(capture.get(CV_CAP_PROP_POS_FRAMES));
-    return fnumber;
-}
-
 float VideoProcessor::getFrameRate()
 {
     if(isCam) {
         return defoaltRate;
     } else {
-        float rate = capture.get(CV_CAP_PROP_FPS);
+        float rate = captures[0].get(CV_CAP_PROP_FPS);
         return rate?rate:defoaltRate;
     }
 }
 
 cv::Size VideoProcessor::getFrameSize() {
     cv::Mat frame;
-    capture >> frame;
+    captures[0] >> frame;
     return frame.size();
 }
 
 bool VideoProcessor::setInput(const std::vector<std::string>& imgs) {
     fnumber = 0;
-    capture.release();
+    captures.clear();
     images= imgs;
     itImg= images.begin();
     return true;
@@ -178,6 +213,8 @@ void VideoProcessor::setFrameProcessor(FrameProcessor* frameProcessorPtr)
     callProcess();
 }
 
+
+// Подумать над реализацией одновременной записи нескольких видео
 bool VideoProcessor::setOutput(const std::string &filename,
             int codec, double framerate,
             bool isColor) {
@@ -229,7 +266,7 @@ int VideoProcessor::getCodec(char codec[4]) {
             char code[4];
         } returned;
     returned.value= static_cast<int>(
-                capture.get(CV_CAP_PROP_FOURCC));
+                captures[0].get(CV_CAP_PROP_FOURCC));
     codec[0]= returned.code[0];
     codec[1]= returned.code[1];
     codec[2]= returned.code[2];
