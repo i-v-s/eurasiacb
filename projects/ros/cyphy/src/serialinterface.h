@@ -38,7 +38,7 @@
 
 //#include "crc16.h"
 //#include "telemetry.h"
-#include "flightcontrol.h"
+
 
 #define TXD_BUFFER_LEN	300 // это количество элементво массива g_txd_buffer. Этот массив отправляется функцией SendOutData в плату
 #define RXD_BUFFER_LEN	300 // это кол-во элементов массива g_rxd_buffer. Этот массив заполняется функцией getdata класса Serialinterface. Там еще вопрос - нафига в функции тоже стоит свой параметр len и он там равен 250
