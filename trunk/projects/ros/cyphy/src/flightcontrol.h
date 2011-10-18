@@ -41,7 +41,7 @@
 #include <sys/time.h>
 #include <control_toolbox/pid.h>
 #include "serialinterface.h"
-#include "serial_interface.cpp"
+//#include "serial_interface.cpp"
 
 #if 0
 #define TRUE 1

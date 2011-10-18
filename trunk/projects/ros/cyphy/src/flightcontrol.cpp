@@ -22,6 +22,7 @@
  */
 
 #include "flightcontrol.h"
+#include "serial_interface.cpp"
 
 ros::Timer timer;
 ros::WallTimer walltimer;
