@@ -9,10 +9,11 @@ int main(){
     //Yo!
     VideoProcessor processor;
     qstab::FeatureTracker tracker;
+    tracker.fix();
     //tracker.setTrigger(mytrigger);
     processor.setInput(CV_CAP_ANY);
     processor.setFrameProcessor(&tracker);
-    //processor.setOutput("output.avi", CV_FOURCC('D','I','V','X'));
+    processor.setOutput("output.avi", CV_FOURCC('D','I','V','X'));
     processor.displayOutput("Tracked Features");
 
     processor.setDelay(1000./processor.getFrameRate());
