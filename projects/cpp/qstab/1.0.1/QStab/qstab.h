@@ -10,30 +10,28 @@ namespace qstab {
 class FeatureTracker: public FrameProcessor
 {
     cv::Mat gray;
-    std::vector<cv::Mat> gray_prev;
-    std::vector<std::vector<cv::Point2f> > points;
+    cv::Mat gray_prev;
+    std::vector<cv::Point2f> points[2];
+    std::vector<cv::Point2f> features;
     int max_count;
-    bool fixed;
-    bool waitForFix;
     double qlevel;
     double minDist;
-    std::vector<double> rightMotion;
-    std::vector<double> leftMotion;
-    std::vector<double> verticalMotion;
+    double rightMotion;
+    double leftMotion;
+    double verticalMotion;
     std::vector<uchar> status;
     std::vector<float> err;
 
-    void (*trigger)(std::vector<double>, std::vector<double>, std::vector<double>);
+    void (*trigger)(double, double, double);
 
     void detectFeaturePoints();
-    void calcMotion(int num);
-    void drawMotion(std::vector<cv::Mat> &outputs);
+    void calcMotion(cv::Mat& frame);
+    void drawMotion(cv:: Mat &frame,
+                    cv:: Mat &output);
 public:
     FeatureTracker();
-    void process(std::vector<cv::Mat> &frames, std::vector<cv::Mat> &outputs, bool isShow);
-    void setTrigger(void (*triggerFunc) (std::vector<double>, std::vector<double>, std::vector<double>));
-    void fix();
-    void unfix();
+    void process(cv:: Mat &frame, cv:: Mat &output, bool isShow);
+    void setTrigger(void (*triggerFunc) (double, double, double));
 };
 
 }
