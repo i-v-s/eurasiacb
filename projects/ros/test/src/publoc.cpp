@@ -1,9 +1,9 @@
 #include "ros/ros.h"
 #include "std_msgs/Int32.h"
 
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
+//#include <opencv2/core/core.hpp>
+//#include <opencv2/imgproc/imgproc.hpp>
+//#include <opencv2/highgui/highgui.hpp>
 
 #include <sstream>
 
@@ -18,14 +18,14 @@ int main(int argc, char **argv)
 
   ros::Rate loop_rate(10);
 
-  cv::Mat img = cv::imread("delacroix.jpg");
+  //cv::Mat img = cv::imread("delacroix.jpg");
 
   int count = 0;
   while (ros::ok())
   {
     std_msgs::Int32 msg;
 
-    msg.data = img.rows;
+    msg.data = 1; //img.rows;
 
     ROS_INFO("%d", msg.data);
 
