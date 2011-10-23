@@ -1,0 +1,14 @@
+<package>
+  <description brief="testOC">
+
+     testOC
+
+  </description>
+  <author>Василий</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/testOC</url>
+
+</package>
+
+
