@@ -5,41 +5,56 @@ using namespace qstab;
 FeatureTracker::FeatureTracker() : max_count(500),
             qlevel(0.01), minDist(10.) {
     trigger = 0;
+    fixed = false;
+    waitForFix = false;
+
+    step = 0;
 }
 
 void FeatureTracker::process(cv::Mat &frame, cv::Mat &output, bool isShow) {
 
-    cv::cvtColor(frame, gray, CV_BGR2GRAY);
+    if(isShow) {
+        frame.copyTo(output);
+    }
 
-    detectFeaturePoints();
-    points[0] = features;
+    if(step<100) {
+        step++;
+        return;
+    }
 
-    if(gray_prev.empty())
-        gray.copyTo(gray_prev);
+    if(waitForFix) {
+        cv::cvtColor(frame, gray_prev, CV_BGR2GRAY);
+        detectFeaturePoints();
+        waitForFix = false;
+        fixed = true;
+    }
 
-    cv::calcOpticalFlowPyrLK(
-                    gray_prev, gray,
-                    points[0],
-                    points[1],
-                    status,
-                    err);
+    if(fixed) {
+        cv::cvtColor(frame, gray, CV_BGR2GRAY);
+        cv::calcOpticalFlowPyrLK(
+                        gray, gray_prev,
+                        points[0],
+                        points[1],
+                        status,
+                        err);
 
-    calcMotion(frame);
-    cv::swap(gray_prev, gray);
+        calcMotion();
+
+        if(isShow) {
+            drawMotion(frame, output);
+        }
+
+    }
 
     if(trigger) {
         trigger(leftMotion, verticalMotion, rightMotion);
     }
 
-    if(isShow) {
-        frame.copyTo(output);
-        drawMotion(frame, output);
-    }
 }
 
 void FeatureTracker::detectFeaturePoints() {
-    cv::goodFeaturesToTrack(gray,
-                    features,
+    cv::goodFeaturesToTrack(gray_prev,
+                    points[0],
                     max_count,
                     qlevel,
                     minDist);
@@ -69,7 +84,7 @@ void FeatureTracker::drawMotion(cv::Mat &frame, cv::Mat &output) {
 }
 
 
-void FeatureTracker::calcMotion(cv::Mat &frame) {
+void FeatureTracker::calcMotion() {
     leftMotion = 0.0;
     rightMotion = 0.0;
     verticalMotion = 0.0;
@@ -111,4 +126,15 @@ void FeatureTracker::calcMotion(cv::Mat &frame) {
 void qstab::FeatureTracker::setTrigger(void (*triggerFunc)(double,double, double))
 {
     trigger= triggerFunc;
+}
+
+void qstab::FeatureTracker::fix()
+{
+    waitForFix = true;
+}
+
+void qstab::FeatureTracker::unfix()
+{
+    waitForFix = false;
+    fixed = false;
 }
