@@ -11,11 +11,26 @@
 ros::Publisher cameraData_pub;
 
 void mytrigger(double lMotion, double cMotion, double rMotion) {
-    ROS_INFO("l: %f, c: %f", lMotion, cMotion);
+    //ROS_INFO("l: %f, c: %f", lMotion, cMotion);
+
+    double min;
+    if(abs(lMotion)<abs(rMotion)) {
+        min = lMotion;
+    } else {
+        min = rMotion;
+    }
 
     geometry_msgs::Twist msg;
-    msg.linear.x = lMotion;
     msg.linear.y = cMotion;
+
+    if((lMotion>0&&rMotion>0)||(lMotion<0&&rMotion<0)) {
+        msg.linear.x = min;
+        msg.lineat.z = 0.0;
+    }
+    else {
+        msg.linear.x = 0.0;
+        msg.linear.z = min;
+    }
     cameraData_pub.publish(msg);
 }
 
