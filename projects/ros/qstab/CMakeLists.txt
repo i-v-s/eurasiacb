@@ -30,7 +30,6 @@ rosbuild_genmsg()
 #target_link_libraries(example ${PROJECT_NAME})
 
 rosbuild_add_executable(stabtalker src/stabtalker.cpp)
-rosbuild_add_executable(stablistener src/stablistener.cpp)
 
 #OpenCV
 find_package(OpenCV REQUIRED)
