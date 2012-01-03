@@ -9,6 +9,7 @@
 /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/rospack_genmsg_libexe.dir
 /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/rospack_gensrv.dir
 /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/stabtalker.dir
+/home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/teleopkey.dir
 /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/test.dir
 /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/test-future.dir
 /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles/test-results.dir
