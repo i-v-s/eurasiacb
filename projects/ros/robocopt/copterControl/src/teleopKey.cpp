@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <std_msgs/Char.h>
+#include <copterControl/CControl.h>
 #include <signal.h>
 #include <termios.h>
 #include <stdio.h>
@@ -20,13 +20,13 @@ class TeleopKey
     private:
 
         ros::NodeHandle nh_;
-        //ros::Publisher vel_pub_;
+        ros::Publisher ctrl_pub_;
 
 };
 
 TeleopKey::TeleopKey()
 {
-    vel_pub_ = nh_.advertise<std_msgs::Char>("qstab2/teleopKey", 1);
+    ctrl_pub_ = nh_.advertise<copterControl::CControl>("copterControl/teleopKey", 1);
 }
 
 int kfd = 0;
@@ -75,7 +75,6 @@ void TeleopKey::keyLoop()
 
     for(;;)
     {
-        // get the next event from the keyboard
         if(read(kfd, &c, 1) < 0)
         {
             perror("read():");
@@ -83,38 +82,44 @@ void TeleopKey::keyLoop()
         }
 
         ROS_DEBUG("value: 0x%02X\n", c);
+        copterControl::CControl ctrl;
+        ctrl.x = 0;
+        ctrl.y = 0;
+        ctrl.z = 0;
+        ctrl.fix = false;
 
         switch(c)
         {
             case KEYCODE_L:
                 ROS_DEBUG("LEFT");
+                ctrl.x = -1;
                 dirty = true;
             break;
             case KEYCODE_R:
                 ROS_DEBUG("RIGHT");
+                ctrl.x = 1;
                 dirty = true;
             break;
             case KEYCODE_U:
                 ROS_DEBUG("UP");
+                ctrl.y = 1;
                 dirty = true;
             break;
             case KEYCODE_D:
                 ROS_DEBUG("DOWN");
+                ctrl.y = -1;
                 dirty = true;
             break;
             case KEYCODE_S:
                 ROS_DEBUG("SPACE");
+                ctrl.fix = true;
                 dirty = true;
             break;
         }
 
-
-//        turtlesim::Velocity vel;
-//        vel.angular = a_scale_*angular_;
-//        vel.linear = l_scale_*linear_;
         if(dirty ==true)
         {
-            //vel_pub_.publish(vel);
+            ctrl_pub_.publish(ctrl);
             dirty=false;
         }
     }
