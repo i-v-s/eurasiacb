@@ -1,0 +1,14 @@
+<package>
+  <description brief="copterControl">
+
+     copterControl
+
+  </description>
+  <author>Василий</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/copterControl</url>
+
+</package>
+
+
