@@ -400,6 +400,41 @@ clean: CMakeFiles/stabtalker.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/teleopkey.dir
+
+# All Build rule for target.
+CMakeFiles/teleopkey.dir/all: CMakeFiles/rosbuild_precompile.dir/all
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/depend
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles  4
+	@echo "Built target teleopkey"
+.PHONY : CMakeFiles/teleopkey.dir/all
+
+# Include target in all.
+all: CMakeFiles/teleopkey.dir/all
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/teleopkey.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/teleopkey.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build/CMakeFiles 0
+.PHONY : CMakeFiles/teleopkey.dir/rule
+
+# Convenience name for target.
+teleopkey: CMakeFiles/teleopkey.dir/rule
+.PHONY : teleopkey
+
+# clean rule for target.
+CMakeFiles/teleopkey.dir/clean:
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/clean
+.PHONY : CMakeFiles/teleopkey.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/teleopkey.dir/clean
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/test.dir
 
 # All Build rule for target.

@@ -189,7 +189,7 @@ TOOLCHAINCONFIG:FILEPATH=TOOLCHAINCONFIG-NOTFOUND
 USERCONFIG:FILEPATH=USERCONFIG-NOTFOUND
 
 //Path to a file.
-_file_name:FILEPATH=/home/vasiliy/svn/eurasiacb/projects/ros/qstab2/../../cpp/qstab/1.0.1/QStab/videoprocessor.cpp
+_file_name:FILEPATH=/home/vasiliy/svn/eurasiacb/projects/ros/qstab2/src/teleopKey.cpp
 
 //Value Computed by CMake
 qstab2_BINARY_DIR:STATIC=/home/vasiliy/svn/eurasiacb/projects/ros/qstab2/build

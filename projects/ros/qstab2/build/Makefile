@@ -242,6 +242,19 @@ stabtalker/fast:
 .PHONY : stabtalker/fast
 
 #=============================================================================
+# Target rules for targets named teleopkey
+
+# Build rule for target.
+teleopkey: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 teleopkey
+.PHONY : teleopkey
+
+# fast build rule for target.
+teleopkey/fast:
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/build
+.PHONY : teleopkey/fast
+
+#=============================================================================
 # Target rules for targets named test
 
 # Build rule for target.
@@ -351,6 +364,21 @@ src/stabtalker.s:
 	$(MAKE) -f CMakeFiles/stabtalker.dir/build.make CMakeFiles/stabtalker.dir/src/stabtalker.s
 .PHONY : src/stabtalker.s
 
+# target to build an object file
+src/teleopKey.o:
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/src/teleopKey.o
+.PHONY : src/teleopKey.o
+
+# target to preprocess a source file
+src/teleopKey.i:
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/src/teleopKey.i
+.PHONY : src/teleopKey.i
+
+# target to generate assembly for a file
+src/teleopKey.s:
+	$(MAKE) -f CMakeFiles/teleopkey.dir/build.make CMakeFiles/teleopkey.dir/src/teleopKey.s
+.PHONY : src/teleopKey.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -370,6 +398,7 @@ help:
 	@echo "... rospack_genmsg_libexe"
 	@echo "... rospack_gensrv"
 	@echo "... stabtalker"
+	@echo "... teleopkey"
 	@echo "... test"
 	@echo "... test-future"
 	@echo "... test-results"
@@ -384,6 +413,9 @@ help:
 	@echo "... src/stabtalker.o"
 	@echo "... src/stabtalker.i"
 	@echo "... src/stabtalker.s"
+	@echo "... src/teleopKey.o"
+	@echo "... src/teleopKey.i"
+	@echo "... src/teleopKey.s"
 .PHONY : help
 
 
