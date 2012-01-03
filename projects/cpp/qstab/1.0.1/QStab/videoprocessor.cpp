@@ -51,6 +51,8 @@ void VideoProcessor::dontDisplay()
     windowNameOutput.clear();
 }
 
+
+
 void VideoProcessor::run()
 {
     cv::Mat frame;
@@ -88,6 +90,8 @@ void VideoProcessor::run()
 
         if (frameToStop>=0 && getFrameNumber()==frameToStop)
             stopIt();
+
+        cv::waitKey(10);
     }
 }
 
