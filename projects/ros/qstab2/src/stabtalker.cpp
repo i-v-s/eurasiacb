@@ -11,8 +11,6 @@
 ros::Publisher cameraData_pub;
 
 void mytrigger(double lMotion, double cMotion, double rMotion) {
-    //ROS_INFO("l: %f, c: %f", lMotion, cMotion);
-
     double min;
     if(abs(lMotion)<abs(rMotion)) {
         min = lMotion;
@@ -31,6 +29,7 @@ void mytrigger(double lMotion, double cMotion, double rMotion) {
         msg.linear.x = 0.0;
         msg.linear.z = min;
     }
+    ROS_INFO("x: %f, y: %f, z: %f", msg.linear.x, msg.linear.y, msg.linear.z);
     cameraData_pub.publish(msg);
 }
 
