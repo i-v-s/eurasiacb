@@ -25,7 +25,7 @@ void mytrigger(double lMotion, double cMotion, double rMotion) {
 
     if((lMotion>0&&rMotion>0)||(lMotion<0&&rMotion<0)) {
         msg.linear.x = min;
-        msg.lineat.z = 0.0;
+        msg.linear.z = 0.0;
     }
     else {
         msg.linear.x = 0.0;
