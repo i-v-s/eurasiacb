@@ -26,10 +26,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #target_link_libraries(${PROJECT_NAME} another_library)
 #rosbuild_add_boost_directories()
 #rosbuild_link_boost(${PROJECT_NAME} thread)
-rosbuild_add_executable(stabtalker src/stabtalker.cpp ../../cpp/qstab/1.0.1/QStab/qstab.h ../../cpp/qstab/1.0.1/QStab/qstab.cpp ../../cpp/qstab/1.0.1/QStab/videoprocessor.h ../../cpp/qstab/1.0.1/QStab/videoprocessor.cpp)
-
-
-rosbuild_add_executable(teleopkey src/teleopKey.cpp)
+rosbuild_add_executable(stabtalker src/stabtalker.cpp ../../../cpp/qstab/1.0.1/QStab/qstab.h ../../../cpp/qstab/1.0.1/QStab/qstab.cpp ../../../cpp/qstab/1.0.1/QStab/videoprocessor.h ../../../cpp/qstab/1.0.1/QStab/videoprocessor.cpp)
 
 find_package(OpenCV REQUIRED)
 target_link_libraries(stabtalker ${OpenCV_LIBS})

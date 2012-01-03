@@ -5,8 +5,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "../../../cpp/qstab/1.0.1/QStab/qstab.h"
-#include "../../../cpp/qstab/1.0.1/QStab/videoprocessor.h"
+#include "../../../../cpp/qstab/1.0.1/QStab/qstab.h"
+#include "../../../../cpp/qstab/1.0.1/QStab/videoprocessor.h"
 
 ros::Publisher cameraData_pub;
 
