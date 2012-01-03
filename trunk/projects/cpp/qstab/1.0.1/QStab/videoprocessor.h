@@ -66,12 +66,12 @@ public:
     bool isStopped();
     bool isOpened();
 
-
     void writeNextFrame(cv::Mat& frame);
     void displayInput(std::string wn);
     void displayOutput(std::string wn);
     void dontDisplay();
     void run();
+    bool runOnce();
     void stopIt();
     bool readNextFrame(cv::Mat& frame);
     void callProcess();
