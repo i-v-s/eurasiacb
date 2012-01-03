@@ -51,7 +51,42 @@ void VideoProcessor::dontDisplay()
     windowNameOutput.clear();
 }
 
+bool VideoProcessor::runOnce()
+{
+    cv::Mat frame;
+    cv::Mat output;
 
+    if (!readNextFrame(frame))
+        return false;
+
+    if (windowNameInput.length()!=0)
+        cv::imshow(windowNameInput,frame);
+
+    if (callIt) {
+        if (process)
+            process(frame, output);
+        else if (frameProcessor)
+            frameProcessor->process(frame,output, (windowNameOutput.length()!=0));
+        fnumber++;
+    } else {
+        output= frame;
+    }
+
+    if (outputFile.length()!=0)
+        writeNextFrame(output);
+
+
+    if (windowNameOutput.length()!=0){
+        cv::imshow(windowNameOutput,output);
+        cv::waitKey(10);
+    }
+
+    if (delay>=0 && cv::waitKey(delay)>=0)
+        stopIt();
+
+    if (frameToStop>=0 && getFrameNumber()==frameToStop)
+        stopIt();
+}
 
 void VideoProcessor::run()
 {
