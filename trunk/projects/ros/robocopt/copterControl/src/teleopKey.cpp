@@ -2,6 +2,8 @@
 #include <copterControl/CControl.h>
 #include <signal.h>
 #include <termios.h>
+#include <sys/time.h>
+#include <sys/select.h>
 
 // Key codes
 #define KEYCODE_R 0x43
@@ -20,7 +22,7 @@
 #define MIN_NICK -30
 #define DEF_GAS 0
 #define MAX_GAS 100
-#define MIN_GAS -100
+#define MIN_GAS 0
 #define DEF_YAW 0
 #define MAX_YAW 10
 #define MIN_YAW -10
@@ -38,8 +40,6 @@ class TeleopKey
         ros::NodeHandle nh_;
         ros::Publisher ctrl_pub_;
         copterControl::CControl ctrl_msg_;
-
-        int z_factor;
 };
 
 TeleopKey::TeleopKey()
@@ -73,12 +73,10 @@ int main(int argc, char** argv)
     return(0);
 }
 
-
 void TeleopKey::keyLoop()
 {
     char c;
     bool dirty=false;
-
 
     // get the console in raw mode
     tcgetattr(kfd, &cooked);
@@ -94,71 +92,88 @@ void TeleopKey::keyLoop()
     puts("Use arrow keys to move the copter.");
 
 
+    fd_set rfds;
+    int retval;
+    struct timeval mtime;
+
     for(;;)
     {
-        if(read(kfd, &c, 1) < 0)
-        {
-            perror("read():");
-            exit(-1);
+        mtime.tv_usec = 100;
+        mtime.tv_sec = 0;
+
+        FD_ZERO(&rfds);
+        FD_SET(0, &rfds);
+
+        retval = select(1, &rfds, NULL, NULL, &mtime);
+        if(retval==-1)
+            perror("select");
+        else if (retval) {
+
+            read(kfd, &c, 1);
+            ROS_DEBUG("value: 0x%02X\n", c);
+
+            switch(c)
+            {
+                case KEYCODE_L:
+                    ROS_DEBUG("LEFT");
+                    ctrl_msg_.nick = MIN_NICK;
+                    dirty = true;
+                break;
+                case KEYCODE_R:
+                    ROS_DEBUG("RIGHT");
+                    ctrl_msg_.nick = MAX_NICK;
+                    dirty = true;
+                break;
+                case KEYCODE_U:
+                    ROS_DEBUG("FORWARD");
+                    ctrl_msg_.yaw = MAX_YAW;
+                    dirty = true;
+                break;
+                case KEYCODE_DW:
+                    ROS_DEBUG("BACK");
+                    ctrl_msg_.yaw = MIN_YAW;
+                    dirty = true;
+                break;
+                case KEYCODE_W:
+                    ROS_DEBUG("UP");
+                    ctrl_msg_.gas < MAX_GAS ? ctrl_msg_.gas++ : ctrl_msg_.gas= MAX_GAS;
+                    dirty = true;
+                break;
+                case KEYCODE_S:
+                    ROS_DEBUG("DOWN");
+                    ctrl_msg_.gas > MIN_GAS ? ctrl_msg_.gas-- : ctrl_msg_.gas = MIN_GAS;
+                    dirty = true;
+                break;
+                case KEYCODE_SP:
+                    ROS_DEBUG("STOP");
+                    ctrl_msg_.nick = DEF_NICK;
+                    ctrl_msg_.yaw = DEF_YAW;
+                    dirty = true;
+                break;
+                case KEYCODE_D:
+                    ROS_DEBUG("FIX");
+                    ctrl_msg_.fix = true;
+                    dirty = true;
+                break;
+
+            }
+
+            if(dirty) {
+                ROS_INFO("nick=%d, gas=%d, yaw=%d, fix=%s", ctrl_msg_.nick, ctrl_msg_.gas, ctrl_msg_.yaw, ctrl_msg_.fix?"true":"false");
+                ctrl_pub_.publish(ctrl_msg_);
+                ctrl_msg_.fix = false;
+                dirty=false;
+            }
+
         }
+        else {
+            if(ctrl_msg_.nick!=DEF_NICK) ctrl_msg_.nick > DEF_NICK? ctrl_msg_.nick-- : ctrl_msg_.nick++;
+            if(ctrl_msg_.yaw!=DEF_YAW) ctrl_msg_.yaw > DEF_YAW? ctrl_msg_.yaw-- : ctrl_msg_.yaw++;
 
-        ROS_DEBUG("value: 0x%02X\n", c);
-
-        ctrl_msg_.nick = DEF_NICK;
-        ctrl_msg_.yaw = DEF_YAW;
-
-        switch(c)
-        {
-            case KEYCODE_L:
-                ROS_DEBUG("LEFT");
-                ctrl_msg_.nick = MIN_NICK;
-                dirty = true;
-            break;
-            case KEYCODE_R:
-                ROS_DEBUG("RIGHT");
-                ctrl_msg_.nick = MAX_NICK;
-                dirty = true;
-            break;
-            case KEYCODE_U:
-                ROS_DEBUG("FORWARD");
-                ctrl_msg_.yaw = MAX_YAW;
-                dirty = true;
-            break;
-            case KEYCODE_DW:
-                ROS_DEBUG("BACK");
-                ctrl_msg_.yaw = MIN_YAW;
-                dirty = true;
-            break;
-            case KEYCODE_W:
-                ROS_DEBUG("UP");
-                ctrl_msg_.gas < MAX_GAS ? ctrl_msg_.gas++ : ctrl_msg_.gas= MAX_GAS;
-                dirty = true;
-            break;
-            case KEYCODE_S:
-                ROS_DEBUG("DOWN");
-                ctrl_msg_.gas > MIN_GAS ? ctrl_msg_.gas-- : ctrl_msg_.gas = MIN_GAS;
-                dirty = true;
-            break;
-            case KEYCODE_SP:
-                ROS_DEBUG("STOP");
-                ctrl_msg_.nick = DEF_NICK;
-                ctrl_msg_.yaw = DEF_YAW;
-                dirty = true;
-            break;
-            case KEYCODE_D:
-                ROS_DEBUG("FIX");
-                ctrl_msg_.fix = true;
-                dirty = true;
-            break;
-
-        }
-
-        if(dirty) {
             ROS_INFO("nick=%d, gas=%d, yaw=%d, fix=%s", ctrl_msg_.nick, ctrl_msg_.gas, ctrl_msg_.yaw, ctrl_msg_.fix?"true":"false");
             ctrl_pub_.publish(ctrl_msg_);
-            ctrl_msg_.fix = false;
-            dirty=false;
         }
+
     }
 
     return;
