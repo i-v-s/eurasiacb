@@ -2,7 +2,6 @@
 #include <copterControl/CControl.h>
 #include <signal.h>
 #include <termios.h>
-#include <curses.h>
 
 // Key codes
 #define KEYCODE_R 0x43
@@ -61,10 +60,6 @@ void quit(int sig)
     tcsetattr(kfd, TCSANOW, &cooked);
     ros::shutdown();
     exit(0);
-}
-
-void func(int sig) {
-    ROS_INFO("blabla");
 }
 
 int main(int argc, char** argv)
