@@ -12,8 +12,8 @@
 #define KEYCODE_D 0x42
 #define KEYCODE_W 0x77
 #define KEYCODE_S 0x73
-#define KEYCODE_ESC 0x1B
-#define KEYCODE_ENTER 0x0A
+#define KEYCODE_ESC 0x2C
+#define KEYCODE_NT 0x2E
 #define KEYCODE_SP 0x20
 #define KEYCODE_Q 0x71
 
@@ -154,10 +154,14 @@ void TeleopKey::keyLoop()
                 break;
                 case KEYCODE_ESC:
                     ROS_DEBUG("STOP");
+		    ctrl_msg_.nick = DEF_NICK;
+		    ctrl_msg_.gas = DEF_GAS;
+		    ctrl_msg_.yaw = DEF_YAW;
+		    ctrl_msg_.fix = false;
                     ctrl_msg_.poweron = false;
                     dirty = true;
                 break;
-                case KEYCODE_ENTER:
+                case KEYCODE_NT:
                     ROS_DEBUG("START");
                     ctrl_msg_.poweron = true;
                     dirty = true;
