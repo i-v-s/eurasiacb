@@ -16,15 +16,15 @@
 #define KEYCODE_Q 0x71
 
 // Params, DEF- defoult
-#define DEF_X 0
-#define MAX_X 10
-#define MIN_X -10
-#define DEF_Y 0
-#define MAX_Y 100
-#define MIN_Y -100
-#define DEF_Z 0
-#define MAX_Z 10
-#define MIN_Z -10
+#define DEF_NICK 0
+#define MAX_NICK 10
+#define MIN_NICK -10
+#define DEF_GAS 0
+#define MAX_GAS 100
+#define MIN_GAS -100
+#define DEF_YAW 0
+#define MAX_YAW 10
+#define MIN_YAW -10
 
 #define DATAGET_SPEED 4
 
@@ -47,9 +47,9 @@ TeleopKey::TeleopKey()
 {
     ctrl_pub_ = nh_.advertise<copterControl::CControl>("copterControl/teleopKey", 1);
 
-    ctrl_msg_.nick = DEF_X;
-    ctrl_msg_.gas = DEF_Y;
-    ctrl_msg_.yaw = DEF_Z;
+    ctrl_msg_.nick = DEF_NICK;
+    ctrl_msg_.gas = DEF_GAS;
+    ctrl_msg_.yaw = DEF_YAW;
     ctrl_msg_.fix = false;
 }
 
@@ -107,45 +107,45 @@ void TeleopKey::keyLoop()
 
         ROS_DEBUG("value: 0x%02X\n", c);
 
-        ctrl_msg_.nick = DEF_X;
-        ctrl_msg_.yaw = DEF_Z;
+        ctrl_msg_.nick = DEF_NICK;
+        ctrl_msg_.yaw = DEF_YAW;
 
         switch(c)
         {
             case KEYCODE_L:
                 ROS_DEBUG("LEFT");
-                ctrl_msg_.nick = MIN_X;
+                ctrl_msg_.nick = MIN_NICK;
                 dirty = true;
             break;
             case KEYCODE_R:
                 ROS_DEBUG("RIGHT");
-                ctrl_msg_.nick = MAX_X;
+                ctrl_msg_.nick = MAX_NICK;
                 dirty = true;
             break;
             case KEYCODE_U:
                 ROS_DEBUG("FORWARD");
-                ctrl_msg_.yaw = MAX_Z;
+                ctrl_msg_.yaw = MAX_YAW;
                 dirty = true;
             break;
             case KEYCODE_DW:
                 ROS_DEBUG("BACK");
-                ctrl_msg_.yaw = MIN_Z;
+                ctrl_msg_.yaw = MIN_YAW;
                 dirty = true;
             break;
             case KEYCODE_W:
                 ROS_DEBUG("UP");
-                ctrl_msg_.gas < MAX_Y ? ctrl_msg_.gas++ : ctrl_msg_.gas= MAX_Y;
+                ctrl_msg_.gas < MAX_GAS ? ctrl_msg_.gas++ : ctrl_msg_.gas= MAX_GAS;
                 dirty = true;
             break;
             case KEYCODE_S:
                 ROS_DEBUG("DOWN");
-                ctrl_msg_.gas > MIN_Y ? ctrl_msg_.gas-- : ctrl_msg_.gas = MIN_Y;
+                ctrl_msg_.gas > MIN_GAS ? ctrl_msg_.gas-- : ctrl_msg_.gas = MIN_GAS;
                 dirty = true;
             break;
             case KEYCODE_SP:
                 ROS_DEBUG("STOP");
-                ctrl_msg_.nick = DEF_X;
-                ctrl_msg_.yaw = DEF_Z;
+                ctrl_msg_.nick = DEF_NICK;
+                ctrl_msg_.yaw = DEF_YAW;
                 dirty = true;
             break;
             case KEYCODE_D:
@@ -157,7 +157,7 @@ void TeleopKey::keyLoop()
         }
 
         if(dirty) {
-            ROS_INFO("x=%d, y=%d, z=%d, fix=%s", ctrl_msg_.nick, ctrl_msg_.gas, ctrl_msg_.yaw, ctrl_msg_.fix?"true":"false");
+            ROS_INFO("nick=%d, gas=%d, yaw=%d, fix=%s", ctrl_msg_.nick, ctrl_msg_.gas, ctrl_msg_.yaw, ctrl_msg_.fix?"true":"false");
             ctrl_pub_.publish(ctrl_msg_);
             ctrl_msg_.fix = false;
             dirty=false;
