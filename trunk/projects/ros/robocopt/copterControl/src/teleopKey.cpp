@@ -2,7 +2,7 @@
 #include <copterControl/CControl.h>
 #include <signal.h>
 #include <termios.h>
-#include <stdio.h>
+#include <curses.h>
 
 // Key codes
 #define KEYCODE_R 0x43
@@ -17,8 +17,8 @@
 
 // Params, DEF- defoult
 #define DEF_NICK 0
-#define MAX_NICK 10
-#define MIN_NICK -10
+#define MAX_NICK 30
+#define MIN_NICK -30
 #define DEF_GAS 0
 #define MAX_GAS 100
 #define MIN_GAS -100
@@ -63,6 +63,9 @@ void quit(int sig)
     exit(0);
 }
 
+void func(int sig) {
+    ROS_INFO("blabla");
+}
 
 int main(int argc, char** argv)
 {
@@ -70,7 +73,6 @@ int main(int argc, char** argv)
     TeleopKey teleop_turtle;
 
     signal(SIGINT,quit);
-
     teleop_turtle.keyLoop();
 
     return(0);
