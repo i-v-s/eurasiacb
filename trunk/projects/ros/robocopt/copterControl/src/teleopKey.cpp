@@ -47,9 +47,9 @@ TeleopKey::TeleopKey()
 {
     ctrl_pub_ = nh_.advertise<copterControl::CControl>("copterControl/teleopKey", 1);
 
-    ctrl_msg_.x = DEF_X;
-    ctrl_msg_.y = DEF_Y;
-    ctrl_msg_.z = DEF_Z;
+    ctrl_msg_.nick = DEF_X;
+    ctrl_msg_.gas = DEF_Y;
+    ctrl_msg_.yaw = DEF_Z;
     ctrl_msg_.fix = false;
 }
 
@@ -107,45 +107,45 @@ void TeleopKey::keyLoop()
 
         ROS_DEBUG("value: 0x%02X\n", c);
 
-        ctrl_msg_.x = DEF_X;
-        ctrl_msg_.z = DEF_Z;
+        ctrl_msg_.nick = DEF_X;
+        ctrl_msg_.yaw = DEF_Z;
 
         switch(c)
         {
             case KEYCODE_L:
                 ROS_DEBUG("LEFT");
-                ctrl_msg_.x = MIN_X;
+                ctrl_msg_.nick = MIN_X;
                 dirty = true;
             break;
             case KEYCODE_R:
                 ROS_DEBUG("RIGHT");
-                ctrl_msg_.x = MAX_X;
+                ctrl_msg_.nick = MAX_X;
                 dirty = true;
             break;
             case KEYCODE_U:
                 ROS_DEBUG("FORWARD");
-                ctrl_msg_.z = MAX_Z;
+                ctrl_msg_.yaw = MAX_Z;
                 dirty = true;
             break;
             case KEYCODE_DW:
                 ROS_DEBUG("BACK");
-                ctrl_msg_.z = MIN_Z;
+                ctrl_msg_.yaw = MIN_Z;
                 dirty = true;
             break;
             case KEYCODE_W:
                 ROS_DEBUG("UP");
-                ctrl_msg_.y < MAX_Y ? ctrl_msg_.y++ : ctrl_msg_.y= MAX_Y;
+                ctrl_msg_.gas < MAX_Y ? ctrl_msg_.gas++ : ctrl_msg_.gas= MAX_Y;
                 dirty = true;
             break;
             case KEYCODE_S:
                 ROS_DEBUG("DOWN");
-                ctrl_msg_.y > MIN_Y ? ctrl_msg_.y-- : ctrl_msg_.y = MIN_Y;
+                ctrl_msg_.gas > MIN_Y ? ctrl_msg_.gas-- : ctrl_msg_.gas = MIN_Y;
                 dirty = true;
             break;
             case KEYCODE_SP:
                 ROS_DEBUG("STOP");
-                ctrl_msg_.x = DEF_X;
-                ctrl_msg_.z = DEF_Z;
+                ctrl_msg_.nick = DEF_X;
+                ctrl_msg_.yaw = DEF_Z;
                 dirty = true;
             break;
             case KEYCODE_D:
@@ -157,7 +157,7 @@ void TeleopKey::keyLoop()
         }
 
         if(dirty) {
-            ROS_INFO("x=%d, y=%d, z=%d, fix=%s", ctrl_msg_.x, ctrl_msg_.y, ctrl_msg_.z, ctrl_msg_.fix?"true":"false");
+            ROS_INFO("x=%d, y=%d, z=%d, fix=%s", ctrl_msg_.nick, ctrl_msg_.gas, ctrl_msg_.yaw, ctrl_msg_.fix?"true":"false");
             ctrl_pub_.publish(ctrl_msg_);
             ctrl_msg_.fix = false;
             dirty=false;
