@@ -25,3 +25,5 @@ HEADERS += \
     triangle.h \
     reconstruction.h \
     timer.h
+
+QMAKE_CXXFLAGS += -msse2 -msse4
