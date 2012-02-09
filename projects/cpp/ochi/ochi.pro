@@ -32,7 +32,10 @@ SOURCES += main.cpp \
     visualodometry.cpp \
     triangle.cpp \
     reconstruction.cpp \
-    pngUtils.cpp
+    pngUtils.cpp \
+    drawing.cpp \
+    rectify.cpp \
+    matchimages.cpp
 
 HEADERS += \
     matcher.h \
@@ -42,6 +45,9 @@ HEADERS += \
     triangle.h \
     reconstruction.h \
     timer.h \
-    pngUtils.h
+    pngUtils.h \
+    drawing.h \
+    rectify.h \
+    matchimages.h
 
 QMAKE_CXXFLAGS += -msse2 -msse4
