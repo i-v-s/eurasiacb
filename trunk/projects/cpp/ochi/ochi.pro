@@ -10,7 +10,9 @@ TEMPLATE = app
 
 unix {
     CONFIG += link_pkgconfig
-    PKGCONFIG += opencv
+    PKGCONFIG += opencv \
+                libpng
+    INCLUDEPATH += "/usr/include/c++/4.6.1/"
 }
 Win32 {
 
@@ -34,8 +36,7 @@ SOURCES += main.cpp \
     reconstruction.cpp \
     pngUtils.cpp \
     drawing.cpp \
-    rectify.cpp \
-    matchimages.cpp
+    rectify.cpp
 
 HEADERS += \
     matcher.h \
@@ -47,7 +48,6 @@ HEADERS += \
     timer.h \
     pngUtils.h \
     drawing.h \
-    rectify.h \
-    matchimages.h
+    rectify.h
 
 QMAKE_CXXFLAGS += -msse2 -msse4

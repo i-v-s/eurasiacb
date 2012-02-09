@@ -22,7 +22,6 @@
 
 #define PNG_DEBUG 3
 #include <png.h>
-#include <stdlib.h>
 
 class PngUtils {
 private:
