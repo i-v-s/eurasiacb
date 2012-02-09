@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     filter.cpp \
     visualodometry.cpp \
     triangle.cpp \
-    reconstruction.cpp
+    reconstruction.cpp \
+    pngUtils.cpp
 
 HEADERS += \
     matcher.h \
@@ -40,6 +41,7 @@ HEADERS += \
     visualodometry.h \
     triangle.h \
     reconstruction.h \
-    timer.h
+    timer.h \
+    pngUtils.h
 
 QMAKE_CXXFLAGS += -msse2 -msse4
