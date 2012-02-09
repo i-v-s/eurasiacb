@@ -33,8 +33,8 @@ int main()
             imageint[i] = static_cast<uint8_t>(image[i]);
         }
 
-        m.pushBack(imageint, 1267, 387, 1267, true);
-        m.pushBack(imageint, 1267, 387, 1267, true);
+        m.pushBack(imageint, 1267, 387, 1267, false);
+        m.pushBack(imageint, 1267, 387, 1267, false);
         m.matchFeatures(0);
         m.bucketFeatures(4,30,30);
                std::vector<Matcher::p_match> features = m.getMatches();
