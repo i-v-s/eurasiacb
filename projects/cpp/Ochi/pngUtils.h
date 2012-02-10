@@ -38,11 +38,13 @@ public:
 
     void Clear();
     void ReadImage(int16_t* I);
-    void Read(char* file_name);
+    //void Read(char* file_name);
+    /*
     int Write(
         char* filename,
         int width, int height,
         unsigned char *buffer, char* title);
+    */
     PngUtils();
     ~PngUtils();
 };
