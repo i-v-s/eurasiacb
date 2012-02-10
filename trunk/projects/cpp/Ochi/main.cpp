@@ -1,9 +1,7 @@
-#include <iostream>
-#include <png.h>
+#include <ctime>
 
 
 int main() {
-	std::cout << "SVN is working!!!" << std::endl;
-
+	std::time(0);
 	return 1;
 }

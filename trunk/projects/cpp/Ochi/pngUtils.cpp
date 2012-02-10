@@ -44,13 +44,14 @@ void PngUtils::ReadImage(
     }
 }
 
+/*
 void PngUtils::Read(char* file_name)
 {
-    char header[8];	/* 8 is the maximum size that can be checked */
+    char header[8];	// 8 is the maximum size that can be checked
     FILE *fp;
     int ret,y;
 
-    /* open file and test for it being a png */
+    // open file and test for it being a png
     fp = fopen(file_name, "rb");
     if (!fp)
 	printf("[read_png_file] File %s could not be opened for reading", file_name);
@@ -58,7 +59,7 @@ void PngUtils::Read(char* file_name)
     if (png_sig_cmp((png_bytep)header, (png_size_t)0, (png_size_t)8))
 	printf("[read_png_file] File %s is not recognized as a PNG file", file_name);
 
-    /* initialize stuff */
+    // initialize stuff
     png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	
     if (!png_ptr)
@@ -97,7 +98,7 @@ void PngUtils::Read(char* file_name)
     number_of_passes = png_set_interlace_handling(png_ptr);
     png_read_update_info(png_ptr, info_ptr);
 
-    /* read file */
+    // read file
     if (setjmp(png_jmpbuf(png_ptr)))
         printf("[read_png_file] Error during read_image");
 
@@ -110,7 +111,9 @@ void PngUtils::Read(char* file_name)
     fclose(fp);
     png_loaded = 1;
 }
+*/
 
+/*
 int PngUtils::Write(
     char* filename,
     int width, int height,
@@ -122,7 +125,7 @@ int PngUtils::Write(
     png_infop info_ptr=0;
     png_bytep row=0;
 
-    /* Open file for writing (binary mode) */
+    // Open file for writing (binary mode)
     fp = fopen(filename, "wb");
     if (fp == NULL) {
         fprintf(stderr, "Could not open file %s for writing\n", filename);
@@ -130,7 +133,7 @@ int PngUtils::Write(
         goto finalise;
     }
 
-    /* Initialize write structure */
+    // Initialize write structure
     png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
     if (png_ptr == NULL) {
         fprintf(stderr, "Could not allocate write struct\n");
@@ -138,7 +141,7 @@ int PngUtils::Write(
         goto finalise;
     }
 
-    /* Initialize info structure */
+    // Initialize info structure
     info_ptr = png_create_info_struct(png_ptr);
     if (info_ptr == NULL) {
         fprintf(stderr, "Could not allocate info struct\n");
@@ -146,7 +149,7 @@ int PngUtils::Write(
         goto finalise;
     }
 
-    /* Setup Exception handling */
+    // Setup Exception handling
     if (setjmp(png_jmpbuf(png_ptr))) {
         fprintf(stderr, "Error during png creation\n");
         code = 1;
@@ -155,17 +158,17 @@ int PngUtils::Write(
 
     png_init_io(png_ptr, fp);
 
-    /* Write header (8 bit colour depth) */
+    // Write header (8 bit colour depth)
     png_set_IHDR(png_ptr, info_ptr, width, height,
 		8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
 		PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 
     png_write_info(png_ptr, info_ptr);
 
-    /* Allocate memory for one row (3 bytes per pixel - RGB) */
+    // Allocate memory for one row (3 bytes per pixel - RGB)
     row = (png_bytep) malloc(3 * width * sizeof(png_byte));
 
-    /* Write image data */
+    // Write image data
     i=0;
     for (y=0 ; y<height ; y++) {
 	for (x=0 ; x<width ; x++, i+=3) {
@@ -187,6 +190,7 @@ int PngUtils::Write(
 
     return code;
 }
+*/
 
 PngUtils::PngUtils() {
     png_loaded=0;
