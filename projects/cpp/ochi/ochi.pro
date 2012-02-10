@@ -10,8 +10,8 @@ TEMPLATE = app
 
 unix {
     CONFIG += link_pkgconfig
-    PKGCONFIG += opencv \
-                libpng
+    PKGCONFIG += opencv
+
     INCLUDEPATH += "/usr/include/c++/4.6.1/"
 }
 Win32 {
