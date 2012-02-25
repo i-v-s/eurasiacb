@@ -1,0 +1,224 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+.././matcher.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+iostream
+-
+math.h
+-
+emmintrin.h
+-
+algorithm
+-
+vector
+-
+matrix.h
+.././matrix.h
+stdint.h
+-
+
+.././matrix.h
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+iostream
+-
+vector
+-
+stdint.h
+-
+
+.././viso.h
+matrix.h
+.././matrix.h
+matcher.h
+.././matcher.h
+
+.././viso_stereo.h
+viso.h
+.././viso.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/filter.cpp
+stdio.h
+-
+string.h
+-
+cassert
+-
+filter.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/filter.h
+stdint.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/filter.h
+emmintrin.h
+-
+pmmintrin.h
+-
+stdint.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/main.cpp
+iostream
+-
+string
+-
+vector
+-
+stdint.h
+-
+viso_stereo.h
+-
+png++/png.hpp
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matcher.cpp
+matcher.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matcher.h
+triangle.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/triangle.h
+filter.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/filter.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matcher.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+iostream
+-
+math.h
+-
+emmintrin.h
+-
+algorithm
+-
+vector
+-
+matrix.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matrix.h
+stdint.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matrix.cpp
+matrix.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matrix.h
+math.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matrix.h
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+iostream
+-
+vector
+-
+stdint.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/reconstruction.cpp
+reconstruction.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/reconstruction.h
+fstream
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/reconstruction.h
+iostream
+-
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+math.h
+-
+matcher.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matcher.h
+matrix.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matrix.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/timer.h
+iostream
+-
+iomanip
+-
+stdio.h
+-
+string.h
+-
+stdlib.h
+-
+vector
+-
+string
+-
+sys/time.h
+-
+stdint.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/triangle.cpp
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+math.h
+-
+triangle.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/triangle.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/triangle.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso.cpp
+viso.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso.h
+math.h
+-
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso.h
+matrix.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matrix.h
+matcher.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/matcher.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso_mono.cpp
+viso_mono.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso_mono.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso_mono.h
+viso.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso_stereo.cpp
+viso_stereo.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso_stereo.h
+timer.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/timer.h
+
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso_stereo.h
+viso.h
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/viso.h
+
