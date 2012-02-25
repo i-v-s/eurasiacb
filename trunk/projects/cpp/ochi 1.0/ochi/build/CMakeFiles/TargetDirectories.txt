@@ -1,0 +1,1 @@
+/home/bachinin/projects/eurasiacb/projects/cpp/ochi 1.0/ochi/build/CMakeFiles/myexe.dir
