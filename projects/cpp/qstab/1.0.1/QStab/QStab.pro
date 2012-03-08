@@ -29,6 +29,16 @@ Win32 {
     -llibopencv_features2d231 \
     -llibopencv_calib3d231
 }
+Win64 {
+    INCLUDEPATH += D:\Users\Vasiliy\OpenCV\opencv\build\include
+
+    LIBS += -LD:\Users\Vasiliy\OpenCV\opencv\build\x64\mingw\lib \
+    -llibopencv_core231 \
+    -llibopencv_highgui231 \
+    -llibopencv_imgproc231 \
+    -llibopencv_features2d231 \
+    -llibopencv_calib3d231
+}
 
 SOURCES += main.cpp \
     videoprocessor.cpp \
