@@ -1,48 +1,64 @@
 #include "cameracalibrator.h"
 
-CameraCalibrator::CameraCalibrator() : flag(0), mustInitUndistort(true)
+CameraCalibrator::CameraCalibrator(cv::Size &bSize) : flag(0), mustInitUndistort(true), successes(0)
 {
-}
-
-bool CameraCalibrator::addChessboardPoint(const cv::Mat &image, cv::Size &boardSize)
-{
-    // the points on the chessboard
-    std::vector<cv::Point2f> imageCorners;
-    std::vector<cv::Point3f> objectCorners;
-    // 3D Scene Points:
-    // Initialize the chessboard corners
-    // in the chessboard reference frame
-    // The corners are at 3D location (X,Y,Z)= (i,j,0)
+    boardSize = bSize;
     for (int i=0; i<boardSize.height; i++) {
         for (int j=0; j<boardSize.width; j++) {
            objectCorners.push_back(cv::Point3f(i, j, 0.0f));
         }
     }
-
-    bool found = cv::findChessboardCorners(
-               image, boardSize, imageCorners);
-    // Get subpixel accuracy on the corners
-    cv::cornerSubPix(image, imageCorners,
-                    cv::Size(5,5),
-                    cv::Size(-1,-1),
-                    cv::TermCriteria(cv::TermCriteria::MAX_ITER +
-                    cv::TermCriteria::EPS,
-                    30,
-                    0.1)); // min accuracy
-    //If we have a good board, add it to our data
-    if (imageCorners.size() == boardSize.area()) {
-        // Add image and scene points from one view
-        addPoints(imageCorners, objectCorners);
-        successes++;
-    }
-
-    return found;
 }
 
-void CameraCalibrator::addPoints(const std::vector<cv::Point2f> &imageCorners, const std::vector<cv::Point3f> &objectCorners)
+bool CameraCalibrator::addChessboardPoint(const cv::Mat &imageL, const cv::Mat &imageR)
+{
+    // the points on the chessboard
+    std::vector<cv::Point2f> imageCornersL;
+    std::vector<cv::Point2f> imageCornersR;
+
+
+    bool foundL = cv::findChessboardCorners(
+               imageL, boardSize, imageCornersL);
+    bool foundR = cv::findChessboardCorners(
+               imageR, boardSize, imageCornersR);
+
+
+    if(foundL && foundR){
+        // Get subpixel accuracy on the corners
+        cv::cornerSubPix(imageL, imageCornersL,
+                        cv::Size(5,5),
+                        cv::Size(-1,-1),
+                        cv::TermCriteria(cv::TermCriteria::MAX_ITER +
+                        cv::TermCriteria::EPS,
+                        30,
+                        0.1)); // min accuracy
+        cv::cornerSubPix(imageR, imageCornersR,
+                        cv::Size(5,5),
+                        cv::Size(-1,-1),
+                        cv::TermCriteria(cv::TermCriteria::MAX_ITER +
+                        cv::TermCriteria::EPS,
+                        30,
+                        0.1)); // min accuracy
+        //If we have a good board, add it to our data
+        if ((imageCornersL.size() == boardSize.area())
+                && (imageCornersL.size() == boardSize.area())) {
+            // Add image and scene points from one view
+            addPoints(imageCornersL, imageCornersR);
+            successes++;
+        }
+    }
+
+    return foundL&&foundR;
+}
+
+void CameraCalibrator::addPoints(const std::vector<cv::Point2f> &imageCornersL,
+                                 const std::vector<cv::Point2f> &imageCornersR)
 {
     // 2D image points from one view
-    imagePoints.push_back(imageCorners);
+    imagePointsL.push_back(imageCornersL);
+
+    imagePointsR.push_back(imageCornersR);
+
     // corresponding 3D scene points
     objectPoints.push_back(objectCorners);
 }
@@ -54,38 +70,27 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
     //Output rotations and translations
     std::vector<cv::Mat> rvecs, tvecs;
     // start calibration
-    return calibrateCamera(objectPoints, // the 3D points
-                    imagePoints,
-                    imageSize,
-                    cameraMatrix,
-                    distCoeffs,
-                    rvecs, tvecs,
-                           flag);
+    return cv::stereoCalibrate(objectPoints, imagePointsL,
+                               imagePointsR, cameraMatrixL, distCoeffsL,
+                               cameraMatrixR, distCoeffsR, imageSize,
+                               rot, trans, essen, fund);
+//    calibrateCamera(objectPoints, // the 3D points
+//                    imagePoints,
+//                    imageSize,
+//                    cameraMatrix,
+//                    distCoeffs,
+//                    rvecs, tvecs,
+//                           flag);
 }
 
-cv::Mat CameraCalibrator::remap(const cv::Mat &image)
+void CameraCalibrator::showTrans()
 {
-    cv::Mat undistorted;
-    if (mustInitUndistort) { // called once per calibration
-        cv::initUndistortRectifyMap(
-                    cameraMatrix, // computed camera matrix
-                    distCoeffs,
-                    // computed distortion matrix
-                    cv::Mat(),
-                    // optional rectification (none)
-                    cv::Mat(),
-                    // camera matrix to generate undistorted
-                    image.size(), // size of undistorted
-                    CV_32FC1,
-                    // type of output map
-                    map1, map2);
-       // the x and y mapping functions
-       mustInitUndistort= false;
+    for(int i = 0; i < trans.rows; i++){
+        int* row = trans.ptr<int>(i);
+        for(int j = 0; j < trans.cols; j++)
+            cout<< row[j] << " ";
+        cout<<endl;
     }
-    // Apply mapping functions
-    cv::remap(image, undistorted, map1, map2,
-                cv::INTER_LINEAR); // interpolation type
-    return undistorted;
 
 }
 

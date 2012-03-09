@@ -6,6 +6,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 
+#include <iostream>
+
 using namespace std;
 
 class CameraCalibrator
@@ -15,25 +17,39 @@ class CameraCalibrator
     // the points in world coordinates
     vector<vector<cv::Point3f> > objectPoints;
     // the point positions in pixels
-    vector<vector<cv::Point2f> > imagePoints;
+    vector<vector<cv::Point2f> > imagePointsL;
+    vector<vector<cv::Point2f> > imagePointsR;
+
     // output Matrices
-    cv::Mat cameraMatrix;
-    cv::Mat distCoeffs;
+    cv::Mat cameraMatrixL;
+    cv::Mat distCoeffsL;
+
+    // output Matrices
+    cv::Mat cameraMatrixR;
+    cv::Mat distCoeffsR;
+
     // flag to specify how calibration is done
     int flag;
-    // used in image undistortion
-    cv::Mat map1,map2;
+    int successes;
+
+    cv::Size boardSize;
+    std::vector<cv::Point3f> objectCorners;
     bool mustInitUndistort;
     int success;
+
+    cv::Mat rot;
+    cv::Mat trans;
+    cv::Mat fund;
+    cv::Mat essen;
 public:
-    CameraCalibrator();
+    CameraCalibrator(cv::Size &bSize);
     bool addChessboardPoint(
-            const cv::Mat& image,
-            cv::Size & boardSize);
-    void addPoints(const std::vector<cv::Point2f>&
-            imageCorners, const std::vector<cv::Point3f>& objectCorners);
+            const cv::Mat& imageL,
+            const cv::Mat& imageR);
+    void addPoints(const std::vector<cv::Point2f>& imageCornersL,
+                   const std::vector<cv::Point2f>& imageCornersR);
     double calibrate(cv::Size &imageSize);
-    cv::Mat remap(const cv::Mat &image);
+    void showTrans();
 
 };
 
