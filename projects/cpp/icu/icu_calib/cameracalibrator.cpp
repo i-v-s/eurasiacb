@@ -86,7 +86,7 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
 void CameraCalibrator::showTrans()
 {
     for(int i = 0; i < trans.rows; i++){
-        int* row = trans.ptr<int>(i);
+        double* row = trans.ptr<double>(i);
         for(int j = 0; j < trans.cols; j++)
             cout<< row[j] << " ";
         cout<<endl;

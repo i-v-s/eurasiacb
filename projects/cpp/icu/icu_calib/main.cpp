@@ -24,7 +24,7 @@ int main()
     //camera initialization
     //TODO figure out how to get actual number of usbcam automatically
     captureL.open(1);
-    captureR.open(2);
+    captureR.open(0);
     //#########################################################################################
     //build windows
     cv::namedWindow("Left");
