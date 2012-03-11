@@ -42,7 +42,7 @@ class CameraCalibrator
     cv::Mat fund;
     cv::Mat essen;
 public:
-    CameraCalibrator(cv::Size &bSize);
+    CameraCalibrator(cv::Size &bSize, float squareSize);
     bool addChessboardPoint(
             const cv::Mat& imageL,
             const cv::Mat& imageR);

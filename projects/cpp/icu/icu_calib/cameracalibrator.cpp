@@ -1,13 +1,16 @@
 #include "cameracalibrator.h"
 
-CameraCalibrator::CameraCalibrator(cv::Size &bSize) : flag(0), mustInitUndistort(true), successes(0)
+CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize) : flag(0), mustInitUndistort(true), successes(0)
 {
     boardSize = bSize;
     for (int i=0; i<boardSize.height; i++) {
         for (int j=0; j<boardSize.width; j++) {
-           objectCorners.push_back(cv::Point3f(i, j, 0.0f));
+           objectCorners.push_back(cv::Point3f(i*squareSize, j*squareSize, 0.f));
         }
     }
+
+    cameraMatrixL = cv::Mat::eye(3, 3, CV_64F);
+    cameraMatrixR = cv::Mat::eye(3, 3, CV_64F);
 }
 
 bool CameraCalibrator::addChessboardPoint(const cv::Mat &imageL, const cv::Mat &imageR)
@@ -18,9 +21,11 @@ bool CameraCalibrator::addChessboardPoint(const cv::Mat &imageL, const cv::Mat &
 
 
     bool foundL = cv::findChessboardCorners(
-               imageL, boardSize, imageCornersL);
+               imageL, boardSize, imageCornersL,
+               CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
     bool foundR = cv::findChessboardCorners(
-               imageR, boardSize, imageCornersR);
+               imageR, boardSize, imageCornersR,
+               CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
 
 
     if(foundL && foundR){
@@ -73,7 +78,11 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
     return cv::stereoCalibrate(objectPoints, imagePointsL,
                                imagePointsR, cameraMatrixL, distCoeffsL,
                                cameraMatrixR, distCoeffsR, imageSize,
-                               rot, trans, essen, fund);
+                               rot, trans, essen, fund,
+                               cv::TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS, 100, 1e-5),
+                                           CV_CALIB_FIX_ASPECT_RATIO +
+                                           CV_CALIB_ZERO_TANGENT_DIST +
+                                           CV_CALIB_SAME_FOCAL_LENGTH);
 //    calibrateCamera(objectPoints, // the 3D points
 //                    imagePoints,
 //                    imageSize,
@@ -85,12 +94,13 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
 
 void CameraCalibrator::showTrans()
 {
-    for(int i = 0; i < trans.rows; i++){
-        double* row = trans.ptr<double>(i);
-        for(int j = 0; j < trans.cols; j++)
-            cout<< row[j] << " ";
-        cout<<endl;
-    }
+    cout << trans;
+//    for(int i = 0; i < trans.rows; i++){
+//        double* row = trans.ptr<double>(i);
+//        for(int j = 0; j < trans.cols; j++)
+//            cout<< row[j] << " ";
+//        cout<<endl;
+//    }
 
 }
 
