@@ -72,7 +72,7 @@ int main()
 
         } else if (key == 10) {
             ccal.calibrate(imSize);
-            ccal.showTrans();
+            ccal.show();
         } else if (key == 27) {
             stop = true;
         }

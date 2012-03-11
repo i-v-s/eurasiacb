@@ -83,18 +83,12 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
                                            CV_CALIB_FIX_ASPECT_RATIO +
                                            CV_CALIB_ZERO_TANGENT_DIST +
                                            CV_CALIB_SAME_FOCAL_LENGTH);
-//    calibrateCamera(objectPoints, // the 3D points
-//                    imagePoints,
-//                    imageSize,
-//                    cameraMatrix,
-//                    distCoeffs,
-//                    rvecs, tvecs,
-//                           flag);
 }
 
-void CameraCalibrator::showTrans()
+void CameraCalibrator::show()
 {
-    cout << trans;
+    cout << "Translation:" << endl << trans << endl;
+
 //    for(int i = 0; i < trans.rows; i++){
 //        double* row = trans.ptr<double>(i);
 //        for(int j = 0; j < trans.cols; j++)
