@@ -11,6 +11,7 @@ int main()
 {
     int verticalCornersNum = 7;
     int gorizonalCornersNum = 7;
+    float squareSize = 4.f;
 
     std::vector<cv::Mat> images;
     //################ CAMERA SETTINGS #############################################################
@@ -24,7 +25,7 @@ int main()
     //camera initialization
     //TODO figure out how to get actual number of usbcam automatically
     captureL.open(1);
-    captureR.open(0);
+    captureR.open(2);
     //#########################################################################################
     //build windows
     cv::namedWindow("Left");
@@ -37,7 +38,7 @@ int main()
 
     cv::Size boardSize(gorizonalCornersNum, verticalCornersNum);
 
-    CameraCalibrator ccal(boardSize);
+    CameraCalibrator ccal(boardSize, squareSize);
     cv::Size imSize(0,0);
     if(!captureL.read(frameL) ){
         cout << "Can't capture :(((" << endl;
