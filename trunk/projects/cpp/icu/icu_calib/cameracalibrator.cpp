@@ -87,7 +87,9 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
 
 void CameraCalibrator::show()
 {
-    cout << "Translation:" << endl << trans << endl;
+    cout << "Translation:" << endl << trans << endl << endl;
+    cout << "Intrisitic Matrix (left):" << endl << cameraMatrixL << endl << endl;
+    cout << "Intrisitic Matrix (right):" << endl << cameraMatrixR << endl << endl;
 
 //    for(int i = 0; i < trans.rows; i++){
 //        double* row = trans.ptr<double>(i);

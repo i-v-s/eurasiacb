@@ -9,9 +9,9 @@ using namespace std;
 
 int main()
 {
-    int verticalCornersNum = 7;
-    int gorizonalCornersNum = 7;
-    float squareSize = 4.f;
+    int verticalCornersNum = 9;
+    int gorizonalCornersNum = 6;
+    float squareSize = 2.5;
 
     std::vector<cv::Mat> images;
     //################ CAMERA SETTINGS #############################################################
