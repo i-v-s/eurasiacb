@@ -49,7 +49,7 @@ public:
     void addPoints(const std::vector<cv::Point2f>& imageCornersL,
                    const std::vector<cv::Point2f>& imageCornersR);
     double calibrate(cv::Size &imageSize);
-    void showTrans();
+    void show();
 
 };
 
