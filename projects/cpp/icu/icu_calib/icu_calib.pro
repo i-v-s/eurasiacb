@@ -21,7 +21,9 @@ unix {
 
 
 SOURCES += main.cpp \
-    cameracalibrator.cpp
+    cameracalibrator.cpp \
+    device.cpp
 
 HEADERS += \
-    cameracalibrator.h
+    cameracalibrator.h \
+    device.h
