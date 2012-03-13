@@ -15,8 +15,6 @@ int main()
     int gorizonalCornersNum = 6;
     float squareSize = 2.5;
 
-    std::vector<cv::Mat> images;
-
     cv::namedWindow("Left");
     cv::namedWindow("Right");
 
