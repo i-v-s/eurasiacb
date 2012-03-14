@@ -1,0 +1,16 @@
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/clean-test-results.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/flightcontrol.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/rosbuild_precompile.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/rosbuild_premsgsrvgen.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/rospack_genmsg.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/rospack_genmsg_libexe.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/rospack_gensrv.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/test.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/test-future.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/test-results.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/test-results-run.dir
+/home/bachinin/code/eurasiacb/projects/ros/cyphy/build/CMakeFiles/tests.dir
