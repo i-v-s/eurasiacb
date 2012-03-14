@@ -1,0 +1,25 @@
+<package>
+  <description brief="testOC">
+
+     testOC
+
+  </description>
+  <author>Василий</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/testOC</url>
+
+  <depend package="cv_bridge"/>
+  <depend package="roscpp" />
+  <depend package="std_msgs" />
+  <depend package="opencv2" /> <!-- Still needs this, so that client code gets the cflags exported by opencv2's manifest-->
+  
+  <!--platform os="ubuntu" version="9.04"/>
+  <platform os="ubuntu" version="9.10"/>
+  <platform os="ubuntu" version="10.04"/-->
+  <platform os="ubuntu" version="11.10"/>
+  <rosdep name="opencv2.3"/>
+
+</package>
+
+
