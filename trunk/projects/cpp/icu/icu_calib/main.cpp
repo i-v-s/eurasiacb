@@ -18,7 +18,7 @@ int main()
     cv::namedWindow("Left");
     cv::namedWindow("Right");
 
-    Device dev(DEV_MODE_WEBCAM, 1, 0);
+    Device dev(DEV_MODE_KINECT, 0, 1);
 
     char key;
     bool stop = false;
@@ -45,15 +45,15 @@ int main()
 
             if(key==32) {
                     cv::imshow("Left", frameL);
-                    //cv::imshow("Right", frameR);
+                    cv::imshow("Right", frameR);
 
-                    /*
+
                     if(ccal.addChessboardPoint(frameL, frameR)) {
                         cout << "ok" << endl;
                     } else {
                         cout << "can't find" << endl;
                     }
-                    */
+
 
             } else if (key == 10) {
                 ccal.calibrate(imSize);
