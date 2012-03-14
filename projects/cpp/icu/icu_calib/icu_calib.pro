@@ -22,8 +22,17 @@ unix {
 
 SOURCES += main.cpp \
     cameracalibrator.cpp \
-    device.cpp
+    device.cpp \
+    kinect.cpp \
+    mutex.cpp
 
 HEADERS += \
     cameracalibrator.h \
-    device.h
+    device.h \
+    kinect.h \
+    mutex.h
+
+INCLUDEPATH += -I/usr/include/libfreenect
+
+LIBS += -L/usr/lib \
+        -lfreenect

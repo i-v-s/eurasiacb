@@ -1,16 +1,11 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-// For Video
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
-
-// For Kinect
-//#include "libfreenect.hpp"
-//#include <cmath>
-//#include <pthread.h>
+#include "kinect.h"
 
 #define DEV_MODE_WEBCAM 0
 #define DEV_MODE_KINECT 1
@@ -33,6 +28,7 @@ private:
     int mode;
     cv::VideoCapture captures[2];
 
+    //Kinect dev;
 };
 
 #endif // DEVICE_H
