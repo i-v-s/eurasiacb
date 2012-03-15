@@ -29,7 +29,6 @@ SOURCES += main.cpp \
 HEADERS += \
     cameracalibrator.h \
     device.h \
-    kinect.h \
     mutex.h
 
 INCLUDEPATH += -I/usr/include/libfreenect
