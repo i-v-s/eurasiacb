@@ -27,8 +27,3 @@ SOURCES += main.cpp \
 HEADERS += \
     cameracalibrator.h \
     device.h
-
-INCLUDEPATH += -I/usr/include/libfreenect
-
-LIBS += -L/usr/lib \
-        -lfreenect

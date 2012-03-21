@@ -11,14 +11,14 @@ using namespace std;
 
 int main()
 {
-    int verticalCornersNum = 9;
-    int gorizonalCornersNum = 6;
-    float squareSize = 2.5;
+    int verticalCornersNum = 7;
+    int gorizonalCornersNum = 7;
+    float squareSize = 40;
 
     cv::namedWindow("Left");
     cv::namedWindow("Right");
 
-    Device dev(DEV_MODE_KINECT, 0, 1);
+    Device dev(DEV_MODE_WEBCAM, 0, 1);
 
     char key;
     bool stop = false;
@@ -39,14 +39,13 @@ int main()
 
     while (!stop) {
 
-        key = cvWaitKey(20);
+        key = cvWaitKey(100);
 
-        if(dev.getImage(DEV_SIDE_LEFT, frameL, DEV_COLOR_BW)  && dev.getImage(DEV_SIDE_RIGHT, frameR, DEV_COLOR_BW)) {
+        if(dev.getImage(DEV_SIDE_LEFT, frameL, DEV_COLOR_BW) && dev.getImage(DEV_SIDE_RIGHT, frameR, DEV_COLOR_BW)) {
 
-            if(key==32) {
+           if(key==32) {
                     cv::imshow("Left", frameL);
                     cv::imshow("Right", frameR);
-
 
                     if(ccal.addChessboardPoint(frameL, frameR)) {
                         cout << "ok" << endl;
@@ -58,11 +57,13 @@ int main()
             } else if (key == 10) {
                 ccal.calibrate(imSize);
                 ccal.show();
-            } else if (key == 27) {
-                stop = true;
             }
         } else {
             cout << "Can't capture :(((" << endl;
+        }
+
+        if (key == 27) {
+            stop = true;
         }
     }
 
