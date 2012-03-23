@@ -13,12 +13,9 @@ int main()
 {
     int verticalCornersNum = 7;
     int gorizonalCornersNum = 7;
-    float squareSize = 40;
+    float squareSize = 4.f;
 
-    cv::namedWindow("Left");
-    cv::namedWindow("Right");
-
-    Device dev(DEV_MODE_WEBCAM, 0, 1);
+    Device dev(DEV_MODE_WEBCAM, 1, 2);
 
     char key;
     bool stop = false;
@@ -34,20 +31,21 @@ int main()
         return 0;
     }
 
-    cv::Mat frameL;
-    cv::Mat frameR;
+    cout<<imSize.width << endl;
+
+    cv::Mat frame[2];
 
     while (!stop) {
 
         key = cvWaitKey(100);
 
-        if(dev.getImage(DEV_SIDE_LEFT, frameL, DEV_COLOR_BW) && dev.getImage(DEV_SIDE_RIGHT, frameR, DEV_COLOR_BW)) {
+        if(dev.getImage(DEV_SIDE_LEFT, frame[0], DEV_COLOR_BW) && dev.getImage(DEV_SIDE_RIGHT, frame[1], DEV_COLOR_BW)) {
 
            if(key==32) {
-                    cv::imshow("Left", frameL);
-                    cv::imshow("Right", frameR);
+                    //cv::imshow("Left", frameL);
+                    //cv::imshow("Right", frameR);
 
-                    if(ccal.addChessboardPoint(frameL, frameR)) {
+                    if(ccal.addChessboardPoint(frame)) {
                         cout << "ok" << endl;
                     } else {
                         cout << "can't find" << endl;

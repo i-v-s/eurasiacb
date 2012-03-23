@@ -1,6 +1,8 @@
 #include "cameracalibrator.h"
 
-CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize) : flag(0), mustInitUndistort(true), successes(0)
+CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize,
+                                   bool useCalibrated, bool showRectified)
+    : flag(0), mustInitUndistort(true), successes(0)
 {
     boardSize = bSize;
     for (int i=0; i<boardSize.height; i++) {
@@ -9,60 +11,81 @@ CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize) : flag(0),
         }
     }
 
+    useCalib = useCalibrated;
+    showRect = showRectified;
+
     cameraMatrixL = cv::Mat::eye(3, 3, CV_64F);
     cameraMatrixR = cv::Mat::eye(3, 3, CV_64F);
 }
 
-bool CameraCalibrator::addChessboardPoint(const cv::Mat &imageL, const cv::Mat &imageR)
+bool CameraCalibrator::addChessboardPoint(cv::Mat images[2])
 {
     // the points on the chessboard
-    std::vector<cv::Point2f> imageCornersL;
-    std::vector<cv::Point2f> imageCornersR;
+    std::vector<cv::Point2f> imageCorners[2];
 
+    bool displayCorners = false;//true;
+    const int maxScale = 2;
 
-    bool foundL = cv::findChessboardCorners(
-               imageL, boardSize, imageCornersL,
-               CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
-    bool foundR = cv::findChessboardCorners(
-               imageR, boardSize, imageCornersR,
-               CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
-
-
-    if(foundL && foundR){
-        // Get subpixel accuracy on the corners
-        cv::cornerSubPix(imageL, imageCornersL,
-                        cv::Size(5,5),
-                        cv::Size(-1,-1),
-                        cv::TermCriteria(cv::TermCriteria::MAX_ITER +
-                        cv::TermCriteria::EPS,
-                        30,
-                        0.1)); // min accuracy
-        cv::cornerSubPix(imageR, imageCornersR,
-                        cv::Size(5,5),
-                        cv::Size(-1,-1),
-                        cv::TermCriteria(cv::TermCriteria::MAX_ITER +
-                        cv::TermCriteria::EPS,
-                        30,
-                        0.1)); // min accuracy
-        //If we have a good board, add it to our data
-        if ((imageCornersL.size() == boardSize.area())
-                && (imageCornersL.size() == boardSize.area())) {
-            // Add image and scene points from one view
-            addPoints(imageCornersL, imageCornersR);
-            successes++;
+    bool rfound = true;
+    bool found = false;
+    for( int k = 0; k < 2; k++ )
+    {
+        vector<cv::Point2f>& corners = imageCorners[k];
+        for( int scale = 1; scale <= maxScale; scale++ )
+        {
+            cv::Mat timg;
+            if( scale == 1 )
+                timg = images[k];
+            else
+                cv::resize(images[k], timg, cv::Size(), scale, scale);
+            found = cv::findChessboardCorners(timg, boardSize, corners,
+                CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
+            rfound &= found;
+            if( found )
+            {
+                if( scale > 1 )
+                {
+                    cv::Mat cornersMat(corners);
+                    cornersMat *= 1./scale;
+                }
+                break;
+            }
         }
+        if( displayCorners )
+        {
+            cv::Mat cimg, cimg1;
+            cv::cvtColor(images[k], cimg, CV_GRAY2BGR);
+            cv::drawChessboardCorners(cimg, boardSize, corners, found);
+            double sf = 640./MAX(images[k].rows, images[k].cols);
+            cv:resize(cimg, cimg1, cv::Size(), sf, sf);
+            string camSide = "Left";
+            if(k==1) {
+                camSide = "Right";
+            }
+            cv::imshow(camSide, cimg1);
+        }
+        else
+            putwchar('.');
+        if( !found )
+            break;
+        cv::cornerSubPix(images[k], corners, cv::Size(11,11), cv::Size(-1,-1),
+                     cv::TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS,
+                                  30, 0.01));
     }
 
-    return foundL&&foundR;
+
+    addPoints(imageCorners);
+    successes++;
+
+    return rfound;
 }
 
-void CameraCalibrator::addPoints(const std::vector<cv::Point2f> &imageCornersL,
-                                 const std::vector<cv::Point2f> &imageCornersR)
+void CameraCalibrator::addPoints(std::vector<cv::Point2f> imageCorners[2])
 {
     // 2D image points from one view
-    imagePointsL.push_back(imageCornersL);
+    imagePointsL.push_back(imageCorners[0]);
 
-    imagePointsR.push_back(imageCornersR);
+    imagePointsR.push_back(imageCorners[1]);
 
     // corresponding 3D scene points
     objectPoints.push_back(objectCorners);
