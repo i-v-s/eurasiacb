@@ -15,7 +15,7 @@ int main()
     int gorizonalCornersNum = 7;
     float squareSize = 4.f;
 
-    Device dev(DEV_MODE_WEBCAM, 0, 1);
+    Device dev(DEV_MODE_WEBCAM, 1, 2);
 
     char key;
     bool stop = false;
@@ -44,11 +44,10 @@ int main()
         if(dev.getImage(DEV_SIDE_LEFT, frame[0], DEV_COLOR_BW) && dev.getImage(DEV_SIDE_RIGHT, frame[1], DEV_COLOR_BW)) {
 
            if(key==32) {
-                    //cv::imshow("Left", frameL);
-                    //cv::imshow("Right", frameR);
-               cout << "i'm here" <<  endl;
+//                cv::imshow("Left", frame[0]);
+//                cv::imshow("Right", frame[1]);
 
-                if(ccal.addChessboardPoint(frame)) {
+                if(ccal.addChessboardPoint(frame[0], frame[1])) {
                     cout << "ok" << endl;
                 } else {
                     cout << "can't find" << endl;

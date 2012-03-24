@@ -48,9 +48,8 @@ class CameraCalibrator
 public:
     CameraCalibrator(cv::Size &bSize, float squareSize,
                      bool useCalibrated = true, bool showRectified = true);
-    bool addChessboardPoint(
-                   cv::Mat images[2]);
-    void addPoints(std::vector<cv::Point2f> imageCorners[2]);
+    bool addChessboardPoint(const cv::Mat& limage, const cv::Mat& rimage);
+    void addPoints(const std::vector<cv::Point2f>& limageCorners, const std::vector<cv::Point2f>& rimageCorners);
     double calibrate(cv::Size &imageSize);
     void show();
 
