@@ -15,7 +15,7 @@ int main()
     int gorizonalCornersNum = 7;
     float squareSize = 4.f;
 
-    Device dev(DEV_MODE_WEBCAM, 1, 2);
+    Device dev(DEV_MODE_WEBCAM, 0, 1);
 
     char key;
     bool stop = false;
@@ -34,6 +34,8 @@ int main()
     cout<<imSize.width << endl;
 
     cv::Mat frame[2];
+    cv::namedWindow("Left");
+    cv::namedWindow("Right");
 
     while (!stop) {
 
@@ -44,13 +46,13 @@ int main()
            if(key==32) {
                     //cv::imshow("Left", frameL);
                     //cv::imshow("Right", frameR);
+               cout << "i'm here" <<  endl;
 
-                    if(ccal.addChessboardPoint(frame)) {
-                        cout << "ok" << endl;
-                    } else {
-                        cout << "can't find" << endl;
-                    }
-
+                if(ccal.addChessboardPoint(frame)) {
+                    cout << "ok" << endl;
+                } else {
+                    cout << "can't find" << endl;
+                }
 
             } else if (key == 10) {
                 ccal.calibrate(imSize);

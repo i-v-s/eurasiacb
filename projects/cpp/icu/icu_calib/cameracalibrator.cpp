@@ -23,7 +23,7 @@ bool CameraCalibrator::addChessboardPoint(cv::Mat images[2])
     // the points on the chessboard
     std::vector<cv::Point2f> imageCorners[2];
 
-    bool displayCorners = false;//true;
+    bool displayCorners = true;
     const int maxScale = 2;
 
     bool rfound = true;
