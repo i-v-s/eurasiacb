@@ -52,7 +52,7 @@ int main () {
 
     //camera initialization
     //TODO figure out how to get actual number of usbcam automatically
-    captureL.open(2);
+    captureL.open(0);
     captureR.open(1);
 
     //#########################################################################################
@@ -64,10 +64,10 @@ int main () {
     VisualOdometryStereo::parameters param;
 
     // calibration parameters for sequence 2010_03_09_drive_0019
-    param.calib.f  = 855.58; // focal length in pixels
-    param.calib.cu = 290.00; // principal point (u-coordinate) in pixels
-    param.calib.cv = 255.00; // principal point (v-coordinate) in pixels
-    param.base     = 0.097; // baseline in meters
+    param.calib.f  = 794.9; // focal length in pixels
+    param.calib.cu = 332.5; // principal point (u-coordinate) in pixels
+    param.calib.cv = 268.5; // principal point (v-coordinate) in pixels
+    param.base     = 0.2769; // baseline in meters
 
     // init visual odometry
     VisualOdometryStereo viso(param);
