@@ -18,19 +18,27 @@ CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize,
     cameraMatrixR = cv::Mat::eye(3, 3, CV_64F);
 }
 
-bool CameraCalibrator::addChessboardPoint(cv::Mat images[2])
+bool CameraCalibrator::addChessboardPoint(const cv::Mat& limage, const cv::Mat& rimage)
 {
     // the points on the chessboard
+    cv::Mat images[2];
+    images[0] = limage;
+    images[1] = rimage;
     std::vector<cv::Point2f> imageCorners[2];
 
-    bool displayCorners = true;
+    string winName[2];
+    winName[0] = "Left";
+    winName[1] = "Right";
+
+    bool displayCorners = false;// true;
     const int maxScale = 2;
 
     bool rfound = true;
     bool found = false;
+
     for( int k = 0; k < 2; k++ )
     {
-        vector<cv::Point2f>& corners = imageCorners[k];
+        std::vector<cv::Point2f>& corners = imageCorners[k];
         for( int scale = 1; scale <= maxScale; scale++ )
         {
             cv::Mat timg;
@@ -38,9 +46,9 @@ bool CameraCalibrator::addChessboardPoint(cv::Mat images[2])
                 timg = images[k];
             else
                 cv::resize(images[k], timg, cv::Size(), scale, scale);
+
             found = cv::findChessboardCorners(timg, boardSize, corners,
-                CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
-            rfound &= found;
+                            CV_CALIB_CB_ADAPTIVE_THRESH | CV_CALIB_CB_NORMALIZE_IMAGE);
             if( found )
             {
                 if( scale > 1 )
@@ -51,18 +59,16 @@ bool CameraCalibrator::addChessboardPoint(cv::Mat images[2])
                 break;
             }
         }
+        rfound &= found;
+
         if( displayCorners )
         {
             cv::Mat cimg, cimg1;
             cv::cvtColor(images[k], cimg, CV_GRAY2BGR);
             cv::drawChessboardCorners(cimg, boardSize, corners, found);
             double sf = 640./MAX(images[k].rows, images[k].cols);
-            cv:resize(cimg, cimg1, cv::Size(), sf, sf);
-            string camSide = "Left";
-            if(k==1) {
-                camSide = "Right";
-            }
-            cv::imshow(camSide, cimg1);
+            cv::resize(cimg, cimg1, cv::Size(), sf, sf);
+            cv::imshow(winName[k], cimg1);
         }
         else
             putwchar('.');
@@ -71,21 +77,23 @@ bool CameraCalibrator::addChessboardPoint(cv::Mat images[2])
         cv::cornerSubPix(images[k], corners, cv::Size(11,11), cv::Size(-1,-1),
                      cv::TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS,
                                   30, 0.01));
+
     }
 
 
-    addPoints(imageCorners);
+    addPoints(imageCorners[0], imageCorners[1]);
     successes++;
 
     return rfound;
 }
 
-void CameraCalibrator::addPoints(std::vector<cv::Point2f> imageCorners[2])
+void CameraCalibrator::addPoints(const std::vector<cv::Point2f>& limageCorners,
+                                 const std::vector<cv::Point2f>& rimageCorners)
 {
     // 2D image points from one view
-    imagePointsL.push_back(imageCorners[0]);
+    imagePointsL.push_back(limageCorners);
 
-    imagePointsR.push_back(imageCorners[1]);
+    imagePointsR.push_back(rimageCorners);
 
     // corresponding 3D scene points
     objectPoints.push_back(objectCorners);
