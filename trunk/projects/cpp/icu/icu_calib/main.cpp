@@ -31,7 +31,7 @@ int main()
         return 0;
     }
 
-    cout<<imSize.width << endl;
+    cout<<imSize.width << "x" << imSize.height << endl;
 
     cv::Mat frame[2];
     cv::namedWindow("Left");
@@ -44,8 +44,6 @@ int main()
         if(dev.getImage(DEV_SIDE_LEFT, frame[0], DEV_COLOR_BW) && dev.getImage(DEV_SIDE_RIGHT, frame[1], DEV_COLOR_BW)) {
 
            if(key==32) {
-//                cv::imshow("Left", frame[0]);
-//                cv::imshow("Right", frame[1]);
 
                 if(ccal.addChessboardPoint(frame[0], frame[1])) {
                     cout << "ok" << endl;
@@ -54,7 +52,8 @@ int main()
                 }
 
             } else if (key == 10) {
-                ccal.calibrate(imSize);
+                double err = ccal.calibrate(imSize);
+                cout << "average reprojection err = " << err << endl;
                 ccal.show();
             }
         } else {
