@@ -1,18 +1,14 @@
 #include "cameracalibrator.h"
 
-CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize,
-                                   bool useCalibrated, bool showRectified)
+CameraCalibrator::CameraCalibrator(cv::Size &bSize, float squareSize)
     : flag(0), mustInitUndistort(true), successes(0)
 {
     boardSize = bSize;
     for (int i=0; i<boardSize.height; i++) {
         for (int j=0; j<boardSize.width; j++) {
-           objectCorners.push_back(cv::Point3f(i*squareSize, j*squareSize, 0.f));
+           objectCorners.push_back(cv::Point3f(i*squareSize, j*squareSize, 0));
         }
     }
-
-    useCalib = useCalibrated;
-    showRect = showRectified;
 
     cameraMatrixL = cv::Mat::eye(3, 3, CV_64F);
     cameraMatrixR = cv::Mat::eye(3, 3, CV_64F);
@@ -106,17 +102,19 @@ double CameraCalibrator::calibrate(cv::Size &imageSize)
 {
     // undistorter must be reinitialized
     mustInitUndistort= true;
-    //Output rotations and translations
-    std::vector<cv::Mat> rvecs, tvecs;
+
     // start calibration
-    return cv::stereoCalibrate(objectPoints, imagePointsL,
-                               imagePointsR, cameraMatrixL, distCoeffsL,
-                               cameraMatrixR, distCoeffsR, imageSize,
-                               rot, trans, essen, fund,
-                               cv::TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS, 100, 1e-5),
-                                           CV_CALIB_FIX_ASPECT_RATIO +
-                                           CV_CALIB_ZERO_TANGENT_DIST +
-                                           CV_CALIB_SAME_FOCAL_LENGTH);
+    return stereoCalibrate(objectPoints, imagePointsL, imagePointsR,
+                    cameraMatrixL, distCoeffsL,
+                    cameraMatrixR, distCoeffsR,
+                    imageSize, rot, trans, essen, fund,
+                    cv::TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS, 100, 1e-5),
+                    CV_CALIB_FIX_ASPECT_RATIO +
+                    CV_CALIB_ZERO_TANGENT_DIST +
+                    CV_CALIB_SAME_FOCAL_LENGTH +
+                    CV_CALIB_RATIONAL_MODEL +
+                    CV_CALIB_FIX_K3 + CV_CALIB_FIX_K4 + CV_CALIB_FIX_K5);
+
 }
 
 void CameraCalibrator::show()

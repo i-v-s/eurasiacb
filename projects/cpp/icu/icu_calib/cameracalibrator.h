@@ -42,12 +42,8 @@ class CameraCalibrator
     cv::Mat fund;
     cv::Mat essen;
 
-    bool useCalib;
-    bool showRect;
-
 public:
-    CameraCalibrator(cv::Size &bSize, float squareSize,
-                     bool useCalibrated = true, bool showRectified = true);
+    CameraCalibrator(cv::Size &bSize, float squareSize);
     bool addChessboardPoint(const cv::Mat& limage, const cv::Mat& rimage);
     void addPoints(const std::vector<cv::Point2f>& limageCorners, const std::vector<cv::Point2f>& rimageCorners);
     double calibrate(cv::Size &imageSize);
