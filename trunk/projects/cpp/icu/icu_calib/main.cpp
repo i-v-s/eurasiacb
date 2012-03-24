@@ -11,11 +11,11 @@ using namespace std;
 
 int main()
 {
-    int verticalCornersNum = 7;
-    int gorizonalCornersNum = 7;
-    float squareSize = 4.f;
+    int verticalCornersNum = 6;
+    int gorizonalCornersNum = 9;
+    float squareSize = 2.5f;
 
-    Device dev(DEV_MODE_WEBCAM, 1, 2);
+    Device dev(DEV_MODE_WEBCAM, 0, 1);
 
     char key;
     bool stop = false;

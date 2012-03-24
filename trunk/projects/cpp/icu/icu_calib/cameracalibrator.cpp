@@ -30,7 +30,7 @@ bool CameraCalibrator::addChessboardPoint(const cv::Mat& limage, const cv::Mat& 
     winName[0] = "Left";
     winName[1] = "Right";
 
-    bool displayCorners = false;// true;
+    bool displayCorners = true;
     const int maxScale = 2;
 
     bool rfound = true;
@@ -63,25 +63,28 @@ bool CameraCalibrator::addChessboardPoint(const cv::Mat& limage, const cv::Mat& 
 
         if( displayCorners )
         {
-            cv::Mat cimg, cimg1;
-            cv::cvtColor(images[k], cimg, CV_GRAY2BGR);
-            cv::drawChessboardCorners(cimg, boardSize, corners, found);
-            double sf = 640./MAX(images[k].rows, images[k].cols);
-            cv::resize(cimg, cimg1, cv::Size(), sf, sf);
-            cv::imshow(winName[k], cimg1);
-        }
-        else
+            if(found) {
+                cv::Mat cimg, cimg1;
+                cv::cvtColor(images[k], cimg, CV_GRAY2BGR);
+                cv::drawChessboardCorners(cimg, boardSize, corners, found);
+                double sf = 640./MAX(images[k].rows, images[k].cols);
+                cv::resize(cimg, cimg1, cv::Size(), sf, sf);
+                cv::imshow(winName[k], cimg1);
+            } else {
+                cv::imshow(winName[k], images[k]);
+            }
+        } else
             putwchar('.');
-        if( !found )
-            break;
-        cv::cornerSubPix(images[k], corners, cv::Size(11,11), cv::Size(-1,-1),
+        if(found)
+            cv::cornerSubPix(images[k], corners, cv::Size(11,11), cv::Size(-1,-1),
                      cv::TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS,
                                   30, 0.01));
 
     }
 
 
-    addPoints(imageCorners[0], imageCorners[1]);
+    if(rfound)
+        addPoints(imageCorners[0], imageCorners[1]);
     successes++;
 
     return rfound;
