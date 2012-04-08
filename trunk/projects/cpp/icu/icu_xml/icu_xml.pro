@@ -23,5 +23,4 @@ unix {
 SOURCES += main.cpp \
     xml_handler.cpp
 
-HEADERS += \
-    xml_handler.h
+HEADERS +=
