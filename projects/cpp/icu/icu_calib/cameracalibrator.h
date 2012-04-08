@@ -7,6 +7,8 @@
 #include <opencv2/calib3d/calib3d.hpp>
 
 #include <iostream>
+#include <mxml.h>
+#include <stdio.h>
 
 using namespace std;
 
@@ -47,6 +49,7 @@ public:
     bool addChessboardPoint(const cv::Mat& limage, const cv::Mat& rimage);
     void addPoints(const std::vector<cv::Point2f>& limageCorners, const std::vector<cv::Point2f>& rimageCorners);
     double calibrate(cv::Size &imageSize);
+    void writeParams();
     void show();
 
 };

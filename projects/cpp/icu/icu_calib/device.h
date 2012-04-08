@@ -22,6 +22,7 @@ public:
 
     bool getImage(int side, cv::Mat& image,int color_mode);
     bool getSize(cv::Size& size);
+    void setResolution(double width, double height);
 
 private:
     int mode;

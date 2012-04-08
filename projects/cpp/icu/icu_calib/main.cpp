@@ -15,7 +15,8 @@ int main()
     int gorizonalCornersNum = 9;
     float squareSize = 2.5f;
 
-    Device dev(DEV_MODE_WEBCAM, 0, 1);
+    Device dev(DEV_MODE_WEBCAM, 1, 2);
+    dev.setResolution(640, 480);
 
     char key;
     bool stop = false;
@@ -54,7 +55,7 @@ int main()
             } else if (key == 10) {
                 double err = ccal.calibrate(imSize);
                 cout << "average reprojection err = " << err << endl;
-                ccal.show();
+                ccal.writeParams();
             }
         } else {
             cout << "Can't capture :(((" << endl;
