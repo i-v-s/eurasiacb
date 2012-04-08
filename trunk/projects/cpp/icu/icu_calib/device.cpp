@@ -48,3 +48,12 @@ bool Device::getSize(cv::Size &size)
 
     return true;
 }
+
+void Device::setResolution(double width, double height)
+{
+    captures[DEV_SIDE_LEFT].set(CV_CAP_PROP_FRAME_WIDTH, width);
+    captures[DEV_SIDE_LEFT].set(CV_CAP_PROP_FRAME_HEIGHT, height);
+
+    captures[DEV_SIDE_RIGHT].set(CV_CAP_PROP_FRAME_WIDTH, width);
+    captures[DEV_SIDE_RIGHT].set(CV_CAP_PROP_FRAME_HEIGHT, height);
+}
