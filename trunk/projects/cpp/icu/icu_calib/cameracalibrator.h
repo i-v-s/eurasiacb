@@ -10,6 +10,8 @@
 #include <mxml.h>
 #include <stdio.h>
 
+#include "../icu_xml/xml_handler.cpp"
+
 using namespace std;
 
 class CameraCalibrator
