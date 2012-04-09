@@ -36,6 +36,7 @@ Street, Fifth Floor, Boston, MA 02110-1301, USA
 #include <stdint.h>
 
 #include <libviso2/viso_stereo.h>
+#include "../icu_xml/xml_handler.cpp"
 
 using namespace std;
 
@@ -63,11 +64,23 @@ int main () {
     // for a full parameter list, look at: viso_stereo.h
     VisualOdometryStereo::parameters param;
 
+    XML_handler xml("../icu_calib-build-desktop/camera_params.xml");
+    //float new_baceline = xml.readParam<float>("baceline");
+    cv::Mat translation;
+    cv::Mat intrisitic;
+
+    xml.readParam<double>("traslation", translation);
+    xml.readParam<double>("intrisitic_left", intrisitic);
+
+    //xml.readParam<uint>("translation", new_trans);
+
     // calibration parameters for sequence 2010_03_09_drive_0019
-    param.calib.f  = 794.9; // focal length in pixels
-    param.calib.cu = 332.5; // principal point (u-coordinate) in pixels
-    param.calib.cv = 268.5; // principal point (v-coordinate) in pixels
-    param.base     = 0.2769; // baseline in meters
+    param.calib.f  = intrisitic.at<double>(1,1); // focal length in pixels
+    param.calib.cu = intrisitic.at<double>(0,2); // principal point (u-coordinate) in pixels
+    param.calib.cv = intrisitic.at<double>(1,2); // principal point (v-coordinate) in pixels
+    param.base     = sqrt(pow(translation.at<double>(0, 0),2) + pow(translation.at<double>(0, 1),2) + pow(translation.at<double>(0, 2),2)); // baseline in meters
+
+    std::cout << "(f, u, v, bace)" << param.calib.f << " " << param.calib.cu << " " << param.calib.cv << " " << param.base << std::endl;
 
     // init visual odometry
     VisualOdometryStereo viso(param);
