@@ -16,7 +16,7 @@ TEMPLATE = app
 
 unix {
     CONFIG += link_pkgconfig
-    PKGCONFIG += opencv
+    PKGCONFIG += opencv  libxml++-2.6
 }
 
 

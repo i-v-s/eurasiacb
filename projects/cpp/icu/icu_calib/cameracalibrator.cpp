@@ -122,37 +122,17 @@ void CameraCalibrator::show()
     cout << "Translation:" << endl << trans << endl << endl;
     cout << "Intrisitic Matrix (left):" << endl << cameraMatrixL << endl << endl;
     cout << "Intrisitic Matrix (right):" << endl << cameraMatrixR << endl << endl;
-
-//    for(int i = 0; i < trans.rows; i++){
-//        double* row = trans.ptr<double>(i);
-//        for(int j = 0; j < trans.cols; j++)
-//            cout<< row[j] << " ";
-//        cout<<endl;
-    //    }
-
 }
 
 void CameraCalibrator::writeParams()
 {
-    mxml_node_t *xml;    /* <?xml ... ?> */
-    mxml_node_t *data;   /* <data> */
-    mxml_node_t *node;   /* <node> */
-
-    char number[22];   //To hold . and null
-
-    xml = mxmlNewXML("1.0");
-    data = mxmlNewElement(xml, "data");
-
-        node = mxmlNewElement(data, "translation");
-            node = mxmlNewElement(node, "x");
-            sprintf(number,"%20.4f",trans.at<double>(0,0));
-            mxmlNewText(node, 0, number);
-
-    FILE *fp;
-    fp = fopen("camera_params.xml", "w");
-    mxmlSaveFile(xml, fp, MXML_NO_CALLBACK);
-    fclose(fp);
-
+    XML_handler xml;
+    xml.rootName("camera_params");
+    //xml.addParam("baceline", 0.1234f);
+    xml.addParam<double>("translation", trans);
+    xml.addParam<double>("intrisitic_left", cameraMatrixL);
+    xml.addParam<double>("intrisitic_right", cameraMatrixR);
+    xml.save("camera_params.xml");
 }
 
 
