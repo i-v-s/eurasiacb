@@ -27,5 +27,3 @@ SOURCES += main.cpp \
 HEADERS += \
     cameracalibrator.h \
     device.h
-
-LIBS += -lmxml
