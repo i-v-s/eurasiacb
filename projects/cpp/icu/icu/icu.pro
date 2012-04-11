@@ -28,7 +28,8 @@ SOURCES += main.cpp \
     libviso2/reconstruction.cpp \
     libviso2/matrix.cpp \
     libviso2/matcher.cpp \
-    libviso2/filter.cpp
+    libviso2/filter.cpp \
+    ../icu_calib/device.cpp
 
 HEADERS += \
     libviso2/viso_stereo.h \
@@ -39,6 +40,7 @@ HEADERS += \
     libviso2/reconstruction.h \
     libviso2/matrix.h \
     libviso2/matcher.h \
-    libviso2/filter.h
+    libviso2/filter.h \
+    ../icu_calib/device.h
 
 QMAKE_CXXFLAGS += -msse3
