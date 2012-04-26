@@ -15,7 +15,6 @@ using namespace std;
 
 class CameraCalibrator
 {
-
     // input points:
     // the points in world coordinates
     vector<vector<cv::Point3f> > objectPoints;

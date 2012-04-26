@@ -1,6 +1,6 @@
 #include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <iostream>
 #include "cameracalibrator.h"
@@ -15,7 +15,7 @@ int main()
     int gorizonalCornersNum = 9;
     float squareSize = 2.5f;
 
-    Device dev(DEV_MODE_WEBCAM, 0, 1);
+    Device dev(DEV_MODE_WEBCAM, 1, 2);
     dev.setResolution(640, 480);
 
     char key;

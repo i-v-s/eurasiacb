@@ -57,3 +57,11 @@ void Device::setResolution(double width, double height)
     captures[DEV_SIDE_RIGHT].set(CV_CAP_PROP_FRAME_WIDTH, width);
     captures[DEV_SIDE_RIGHT].set(CV_CAP_PROP_FRAME_HEIGHT, height);
 }
+
+bool Device::getImages(cv::Mat &imageLeft, cv::Mat &imageRight, int color_mode)
+{
+    int ok = true;
+    ok &= getImage(DEV_SIDE_LEFT, imageLeft, color_mode);
+    ok &= getImage(DEV_SIDE_RIGHT, imageRight, color_mode);
+    return ok;
+}
