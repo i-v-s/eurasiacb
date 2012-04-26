@@ -130,9 +130,10 @@ void CameraCalibrator::writeParams()
     xml.rootName("camera_params");
     //xml.addParam("baceline", 0.1234f);
     xml.addParam<double>("translation", trans);
-    xml.addParam<double>("intrisitic_left", cameraMatrixL);
-    xml.addParam<double>("intrisitic_right", cameraMatrixR);
+    xml.addParam<double>("rotation", rot);
+    xml.addParam<double>("intrinsic_left", cameraMatrixL);
+    xml.addParam<double>("intrinsic_right", cameraMatrixR);
+    xml.addParam<double>("distFactor_left", distCoeffsL);
+    xml.addParam<double>("distFactor_right", distCoeffsR);
     xml.save("camera_params.xml");
 }
-
-

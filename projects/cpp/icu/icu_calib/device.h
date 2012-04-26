@@ -21,6 +21,7 @@ public:
     Device(int c_mode, int usb_num_left, int usb_num_right);
 
     bool getImage(int side, cv::Mat& image,int color_mode);
+    bool getImages(cv::Mat& imageLeft, cv::Mat& imageRight, int color_mode);
     bool getSize(cv::Size& size);
     void setResolution(double width, double height);
 
