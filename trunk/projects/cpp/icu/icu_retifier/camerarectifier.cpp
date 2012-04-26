@@ -32,6 +32,27 @@ CameraRectifier::CameraRectifier(string filename, cv::Size imageSize)
     xml.readParam<double>("distFactor_left", distCoeffsL);
     xml.readParam<double>("distFactor_right", distCoeffsR);
 
+//    distCoeffsL.at<double>(0,0) = 0.0;
+//    distCoeffsL.at<double>(0,1) = 0.0;
+//    distCoeffsL.at<double>(0,7) = 0.0;
+//    distCoeffsR.at<double>(0,0) = 0.0;
+//    distCoeffsR.at<double>(0,1) = 0.0;
+//    distCoeffsR.at<double>(0,7) = 0.0;
+
+//    std::cout << "trans" << std::endl;
+//    std::cout << trans << std::endl;
+//    std::cout << "rotation" << std::endl;
+//    std::cout << rot << std::endl;
+//    std::cout << "intrinsic_left" << std::endl;
+//    std::cout << cameraMatrixL << std::endl;
+//    std::cout << "intrinsic_right" << std::endl;
+//    std::cout << cameraMatrixR << std::endl;
+    std::cout << "distFactor_left" << std::endl;
+    std::cout << distCoeffsL << std::endl;
+    std::cout << "distFactor_right" << std::endl;
+    std::cout << distCoeffsR << std::endl;
+
+
     imSize = imageSize;
     init();
 }
@@ -39,6 +60,7 @@ CameraRectifier::CameraRectifier(string filename, cv::Size imageSize)
 void CameraRectifier::init()
 {
     cv::Mat R1, R2, P1, P2, Q;
+
     cv::stereoRectify(cameraMatrixL, distCoeffsL,
                       cameraMatrixR, distCoeffsR,
                       imSize, rot, trans, R1, R2, P1, P2, Q,
@@ -50,6 +72,9 @@ void CameraRectifier::init()
                                 imSize, CV_16SC2, rmap[0][0], rmap[0][1]);
     cv::initUndistortRectifyMap(cameraMatrixR, distCoeffsR, R2, P2,
                                 imSize, CV_16SC2, rmap[1][0], rmap[1][1]);
+
+    cout << R2 << endl;
+    cout << P2 << endl;
 
 
     if( !isVert )
@@ -72,7 +97,6 @@ void CameraRectifier::rectify(const cv::Mat &imageLeft, const cv::Mat &imageRigh
 {
     cv::Mat rimg, cimg;
     remap(imageLeft, rimg, rmap[0][0], rmap[0][1], CV_INTER_LINEAR);
-    //cv::imshow("Rectificated", rimg);
     cvtColor(rimg, cimg, CV_GRAY2BGR);
     cv::Mat canvasPart = !isVert ? canvas(Rect(0, 0, w, h)) : canvas(Rect(0, 0, w, h));
     resize(cimg, canvasPart, canvasPart.size(), 0, 0, CV_INTER_AREA);
@@ -81,6 +105,7 @@ void CameraRectifier::rectify(const cv::Mat &imageLeft, const cv::Mat &imageRigh
     rectangle(canvasPart, vroi, Scalar(0,0,255), 3, 8);
 
     remap(imageRight, rimg, rmap[1][0], rmap[1][1], CV_INTER_LINEAR);
+    //cv::imshow("Rectificated", rimg);
     cvtColor(rimg, cimg, CV_GRAY2BGR);
     canvasPart = !isVert ? canvas(Rect(w, 0, w, h)) : canvas(Rect(0, h, w, h));
     resize(cimg, canvasPart, canvasPart.size(), 0, 0, CV_INTER_AREA);
