@@ -1,7 +1,7 @@
 #ifndef XML_HANDLER_CPP
 #define XML_HANDLER_CPP
 
-#include <opencv-2.3.1/opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 #include <string>
 #include <libxml++/libxml++.h>
 #include <stdio.h>

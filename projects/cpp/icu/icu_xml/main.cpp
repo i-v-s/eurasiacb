@@ -6,14 +6,14 @@ using namespace std;
 int main()
 {
     // WRITE
-    /*
+
     cv::Mat my_trans = cv::Mat::ones(2, 3, CV_8U);
     XML_handler xml;
     xml.rootName("camera_params");
     xml.addParam("baceline", 0.1234f);
     xml.addParam<uint>("translation", my_trans);
     xml.save("camera_params.xml");
-    */
+
 
     // READ
     cv::Mat new_trans;

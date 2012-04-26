@@ -15,7 +15,7 @@ int main()
     int gorizonalCornersNum = 9;
     float squareSize = 2.5f;
 
-    Device dev(DEV_MODE_WEBCAM, 1, 2);
+    Device dev(DEV_MODE_WEBCAM, 0, 1);
     dev.setResolution(640, 480);
 
     char key;
